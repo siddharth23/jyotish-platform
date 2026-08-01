@@ -1,0 +1,81 @@
+name: Infra
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['infra/**', '.github/workflows/infra.yml']
+  push:
+    branches: [main]
+    paths: ['infra/**', '.github/workflows/infra.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terraform:
+    name: Terraform — single environment
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/environments/single
+    env:
+      # Sensitive — Settings -> Secrets and variables -> Actions -> Secrets.
+      TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+      OBJECT_STORAGE_ACCESS_KEY: ${{ secrets.HETZNER_OBJECT_STORAGE_ACCESS_KEY }}
+      OBJECT_STORAGE_SECRET_KEY: ${{ secrets.HETZNER_OBJECT_STORAGE_SECRET_KEY }}
+      # Not sensitive — a public key and an admin CIDR allowlist. Variables tab.
+      # INFRA_ALLOWED_SSH_CIDRS must be an HCL list literal: ["203.0.113.4/32"]
+      TF_VAR_ssh_public_key: ${{ vars.INFRA_SSH_PUBLIC_KEY }}
+      TF_VAR_allowed_ssh_cidrs: ${{ vars.INFRA_ALLOWED_SSH_CIDRS }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.9.8'
+          terraform_wrapper: false
+
+      # Formatting and validation need no credentials and no backend, so they run
+      # on every change and are the checks that actually catch broken HCL.
+      - name: Format
+        working-directory: infra
+        run: terraform fmt -check -recursive
+
+      - name: Init (no backend)
+        run: terraform init -backend=false
+
+      - name: Validate
+        run: terraform validate
+
+      # A plan needs every input the configuration declares, not just the Hetzner
+      # token: an unset ssh_public_key or allowed_ssh_cidrs fails variable parsing
+      # before it reaches the provider. Until all four are present the plan is
+      # skipped rather than failed — the config is still verified above, and a job
+      # that always fails is a job people learn to ignore.
+      - name: Check whether a plan is possible
+        id: preflight
+        run: |
+          missing=""
+          [ -n "$TF_VAR_hcloud_token" ]      || missing="$missing HCLOUD_TOKEN(secret)"
+          [ -n "$OBJECT_STORAGE_ACCESS_KEY" ] || missing="$missing HETZNER_OBJECT_STORAGE_ACCESS_KEY(secret)"
+          [ -n "$OBJECT_STORAGE_SECRET_KEY" ] || missing="$missing HETZNER_OBJECT_STORAGE_SECRET_KEY(secret)"
+          [ -n "$TF_VAR_ssh_public_key" ]     || missing="$missing INFRA_SSH_PUBLIC_KEY(variable)"
+          [ -n "$TF_VAR_allowed_ssh_cidrs" ]  || missing="$missing INFRA_ALLOWED_SSH_CIDRS(variable)"
+          if [ -z "$missing" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Plan skipped — not configured:$missing. Formatting and validation still ran."
+          fi
+
+      - name: Plan
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          terraform init -reconfigure \
+            -backend-config="access_key=${OBJECT_STORAGE_ACCESS_KEY}" \
+            -backend-config="secret_key=${OBJECT_STORAGE_SECRET_KEY}"
+          terraform plan -input=false -no-color
