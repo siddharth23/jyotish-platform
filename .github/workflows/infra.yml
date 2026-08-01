@@ -3,10 +3,10 @@ name: Infra
 on:
   pull_request:
     branches: [main]
-    paths: ['infra/**']
+    paths: ['infra/**', '.github/workflows/infra.yml']
   push:
     branches: [main]
-    paths: ['infra/**']
+    paths: ['infra/**', '.github/workflows/infra.yml']
 
 permissions:
   contents: read
@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  terraform-plan:
-    name: Terraform plan — single environment
+  terraform:
+    name: Terraform — single environment
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,8 +25,10 @@ jobs:
     env:
       # Sensitive — Settings -> Secrets and variables -> Actions -> Secrets.
       TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-      # Not sensitive (a public key, and the admin CIDR allowlist) — Variables tab, not Secrets.
-      # INFRA_ALLOWED_SSH_CIDRS must be an HCL/JSON list literal, e.g. ["203.0.113.4/32"].
+      OBJECT_STORAGE_ACCESS_KEY: ${{ secrets.HETZNER_OBJECT_STORAGE_ACCESS_KEY }}
+      OBJECT_STORAGE_SECRET_KEY: ${{ secrets.HETZNER_OBJECT_STORAGE_SECRET_KEY }}
+      # Not sensitive — a public key and an admin CIDR allowlist. Variables tab.
+      # INFRA_ALLOWED_SSH_CIDRS must be an HCL list literal: ["203.0.113.4/32"]
       TF_VAR_ssh_public_key: ${{ vars.INFRA_SSH_PUBLIC_KEY }}
       TF_VAR_allowed_ssh_cidrs: ${{ vars.INFRA_ALLOWED_SSH_CIDRS }}
     steps:
@@ -37,14 +39,31 @@ jobs:
           terraform_version: '1.9.8'
           terraform_wrapper: false
 
-      - name: Terraform init
-        run: |
-          terraform init -reconfigure \
-            -backend-config="access_key=${{ secrets.HETZNER_OBJECT_STORAGE_ACCESS_KEY }}" \
-            -backend-config="secret_key=${{ secrets.HETZNER_OBJECT_STORAGE_SECRET_KEY }}"
+      # Formatting and validation need no credentials and no backend, so they run
+      # on every change and are the checks that actually catch broken HCL.
+      - name: Format
+        working-directory: infra
+        run: terraform fmt -check -recursive
 
-      - name: Terraform validate
+      - name: Init (no backend)
+        run: terraform init -backend=false
+
+      - name: Validate
         run: terraform validate
 
-      - name: Terraform plan
-        run: terraform plan -input=false -no-color
+      # A plan needs a Hetzner token and the state bucket's credentials. Until
+      # those secrets exist the plan is skipped rather than failed: the config is
+      # still verified above, and a job that always fails is a job people learn to
+      # ignore. Set the three secrets and this starts running on its own.
+      - name: Plan
+        if: env.TF_VAR_hcloud_token != '' && env.OBJECT_STORAGE_ACCESS_KEY != ''
+        run: |
+          terraform init -reconfigure \
+            -backend-config="access_key=${OBJECT_STORAGE_ACCESS_KEY}" \
+            -backend-config="secret_key=${OBJECT_STORAGE_SECRET_KEY}"
+          terraform plan -input=false -no-color
+
+      - name: Note when the plan was skipped
+        if: env.TF_VAR_hcloud_token == '' || env.OBJECT_STORAGE_ACCESS_KEY == ''
+        run: |
+          echo "::notice::Plan skipped — HCLOUD_TOKEN and/or the Hetzner Object Storage keys are not set. Formatting and validation still ran."
