@@ -1,0 +1,13 @@
+# Default
+*                       @YOUR-GITHUB-USERNAME
+
+# Licensing boundary — never merge without review
+/docs/AGPL-BOUNDARY.md  @YOUR-GITHUB-USERNAME
+/scripts/check_agpl_boundary.sh @YOUR-GITHUB-USERNAME
+/docs/adr/              @YOUR-GITHUB-USERNAME
+
+# Money
+/api/src/modules/payment/ @YOUR-GITHUB-USERNAME
+
+# Compliance
+/docs/COMPLIANCE.md     @YOUR-GITHUB-USERNAME

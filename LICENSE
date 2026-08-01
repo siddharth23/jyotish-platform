@@ -1,0 +1,24 @@
+Copyright (c) 2026 Siddharth Kala. All rights reserved.
+
+PROPRIETARY AND CONFIDENTIAL
+
+This software and its accompanying documentation are proprietary and confidential.
+No part of this repository may be reproduced, distributed, transmitted, or used to
+create derivative works without the prior written permission of the copyright holder.
+
+Unauthorised copying of this repository, via any medium, is strictly prohibited.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY COMPONENTS
+--------------------------------------------------------------------------------
+
+This repository CONSUMES, but does not incorporate, the AGPL-3.0 licensed
+`jyotish-engine` package. That package executes exclusively in client-side contexts
+(mobile applications on end-user devices, and WebAssembly in end-user browsers).
+
+No server-side component in this repository links to, bundles, embeds, or invokes
+AGPL-licensed code. This separation is what permits this repository to remain
+proprietary. It is documented in docs/AGPL-BOUNDARY.md and enforced by
+scripts/check_agpl_boundary.sh in CI.
+
+Do not remove that check.

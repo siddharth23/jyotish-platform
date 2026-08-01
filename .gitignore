@@ -1,0 +1,57 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+*.keystore
+*.jks
+service-account*.json
+
+# Dependencies
+node_modules/
+.dart_tool/
+.packages
+vendor/
+
+# Build output
+build/
+dist/
+out/
+*.tsbuildinfo
+app/ios/Pods/
+app/android/.gradle/
+app/android/local.properties
+*.ipa
+*.apk
+*.aab
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Test and coverage
+coverage/
+*.lcov
+test-results/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local data — must never be committed
+*.sqlite
+*.db
+fixtures/real-*
