@@ -32,7 +32,7 @@ jobs:
       TF_VAR_ssh_public_key: ${{ vars.INFRA_SSH_PUBLIC_KEY }}
       TF_VAR_allowed_ssh_cidrs: ${{ vars.INFRA_ALLOWED_SSH_CIDRS }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: hashicorp/setup-terraform@v3
         with:

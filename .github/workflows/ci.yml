@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: flutter-analyse
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check for the Android project
         id: platform
         run: |
@@ -89,7 +89,7 @@ jobs:
     runs-on: macos-latest
     needs: flutter-analyse
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check for the iOS project
         id: platform
         run: |
@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '20'
       - working-directory: api
