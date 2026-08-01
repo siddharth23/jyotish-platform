@@ -1,81 +1,72 @@
 name: CD
 
-# Deploy pipeline for US-002. The three real jobs below (dev/staging/prod) are
-# intentionally stubbed — there is no cloud target yet (infra/ has no Terraform,
-# no provider has been chosen; see US-003). Each stub fails loudly on purpose
-# rather than reporting a fake green deploy. Replace the `run` step in each job
-# with the real deploy command once US-003 lands, and delete this comment block.
+# Deploy pipeline for US-002.
+#
+# MANUAL ONLY, DELIBERATELY. There is no deploy target yet: US-003 provisions a
+# single Hetzner box, and the API it would serve is still an unimplemented stub
+# (api/src/main.ts throws). Until both exist, every job here fails loudly rather
+# than reporting a deploy that did not happen.
+#
+# The automatic triggers are withheld rather than merely failing, because a
+# workflow that goes red on every merge to main trains everyone to ignore CI.
+# When there is something real to deploy, restore:
+#
+#   on:
+#     push:
+#       branches: [main]     # -> deploy-dev
+#       tags: ['v*']         # -> deploy-staging, then deploy-prod
+#
+# and drop the `if: false` guards below.
 
 on:
-  push:
-    branches: [main]
-    tags: ['v*']
   workflow_dispatch:
     inputs:
       environment:
-        description: Environment to roll back
+        description: Target environment
         required: true
         type: choice
         options: [dev, staging, production]
-      target:
-        description: Commit SHA or tag to roll back to
+      action:
+        description: Deploy or roll back
         required: true
+        type: choice
+        options: [deploy, rollback]
+      target:
+        description: Commit SHA or tag (rollback only)
+        required: false
         type: string
 
+permissions:
+  contents: read
+
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ inputs.environment }}
 
 jobs:
-  deploy-dev:
-    name: Deploy — dev
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  deploy:
+    name: Deploy
+    if: inputs.action == 'deploy'
     runs-on: ubuntu-latest
-    environment: dev
+    # staging and production must have required reviewers configured under
+    # Settings -> Environments. That gate is the manual approval step.
+    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to dev
+      - name: Deploy to ${{ inputs.environment }}
         run: |
-          echo "::error::No dev environment exists yet (US-003 not started — infra/ has no Terraform, no cloud provider chosen)."
-          echo "Replace this step with the real deploy command once infra exists."
-          exit 1
-
-  deploy-staging:
-    name: Deploy — staging
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    # Requires a "staging" environment with required reviewers configured in
-    # repo Settings → Environments — that gate is what makes this a manual approval.
-    environment: staging
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to staging
-        run: |
-          echo "::error::No staging environment exists yet (US-003 not started)."
-          exit 1
-
-  deploy-prod:
-    name: Deploy — production
-    needs: deploy-staging
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    # Requires a "production" environment with required reviewers configured in
-    # repo Settings → Environments — that gate is what makes this a manual approval.
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to production
-        run: |
-          echo "::error::No production environment exists yet (US-003 not started)."
+          echo "::error::No ${{ inputs.environment }} environment is deployable yet."
+          echo "US-003 provisions the host; api/src/main.ts is still an unimplemented stub."
+          echo "Replace this step with the real deploy command once both exist."
           exit 1
 
   rollback:
     name: Rollback
-    if: github.event_name == 'workflow_dispatch'
+    if: inputs.action == 'rollback'
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
-      - name: Roll back
+      - name: Roll back ${{ inputs.environment }} to ${{ inputs.target }}
         run: |
-          echo "::error::Rollback target: ${{ inputs.target }} on ${{ inputs.environment }}. No deploy target exists yet (US-003 not started) — nothing to roll back to."
+          echo "::error::Nothing is deployed to ${{ inputs.environment }}, so there is nothing to roll back to."
           exit 1
