@@ -1,0 +1,72 @@
+name: CD
+
+# Deploy pipeline for US-002.
+#
+# MANUAL ONLY, DELIBERATELY. There is no deploy target yet: US-003 provisions a
+# single Hetzner box, and the API it would serve is still an unimplemented stub
+# (api/src/main.ts throws). Until both exist, every job here fails loudly rather
+# than reporting a deploy that did not happen.
+#
+# The automatic triggers are withheld rather than merely failing, because a
+# workflow that goes red on every merge to main trains everyone to ignore CI.
+# When there is something real to deploy, restore:
+#
+#   on:
+#     push:
+#       branches: [main]     # -> deploy-dev
+#       tags: ['v*']         # -> deploy-staging, then deploy-prod
+#
+# and drop the `if: false` guards below.
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options: [dev, staging, production]
+      action:
+        description: Deploy or roll back
+        required: true
+        type: choice
+        options: [deploy, rollback]
+      target:
+        description: Commit SHA or tag (rollback only)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.environment }}
+
+jobs:
+  deploy:
+    name: Deploy
+    if: inputs.action == 'deploy'
+    runs-on: ubuntu-latest
+    # staging and production must have required reviewers configured under
+    # Settings -> Environments. That gate is the manual approval step.
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to ${{ inputs.environment }}
+        run: |
+          echo "::error::No ${{ inputs.environment }} environment is deployable yet."
+          echo "US-003 provisions the host; api/src/main.ts is still an unimplemented stub."
+          echo "Replace this step with the real deploy command once both exist."
+          exit 1
+
+  rollback:
+    name: Rollback
+    if: inputs.action == 'rollback'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Roll back ${{ inputs.environment }} to ${{ inputs.target }}
+        run: |
+          echo "::error::Nothing is deployed to ${{ inputs.environment }}, so there is nothing to roll back to."
+          exit 1
