@@ -13,7 +13,7 @@ evaluation.
 This repository is proprietary. It stays that way only because of a licensing boundary that
 is easy to breach by accident.
 
-The astrological calculation engine ([`YOUR-GITHUB-USERNAME/jyotish-engine`](https://github.com/YOUR-GITHUB-USERNAME/jyotish-engine))
+The astrological calculation engine ([`sidkalaapcoa/jyotish-engine`](https://github.com/sidkalaapcoa/jyotish-engine))
 is **AGPL-3.0**. If any server-side code here links to, bundles, or calls it, this entire
 platform becomes subject to AGPL source-disclosure obligations.
 

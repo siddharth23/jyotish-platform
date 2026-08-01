@@ -22,7 +22,7 @@ dependencies:
   # AGPL engine — runs ON DEVICE only. See docs/AGPL-BOUNDARY.md.
   # jyotish_engine:
   #   git:
-  #     url: https://github.com/YOUR-GITHUB-USERNAME/jyotish-engine.git
+  #     url: https://github.com/sidkalaapcoa/jyotish-engine.git
   #     path: packages/dart
 
 dev_dependencies:

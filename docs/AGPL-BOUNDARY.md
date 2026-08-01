@@ -12,7 +12,7 @@
 
 ## Why
 
-The calculation engine ([`YOUR-GITHUB-USERNAME/jyotish-engine`](https://github.com/YOUR-GITHUB-USERNAME/jyotish-engine))
+The calculation engine ([`sidkalaapcoa/jyotish-engine`](https://github.com/sidkalaapcoa/jyotish-engine))
 embeds Swiss Ephemeris under **AGPL-3.0**, not the paid Professional licence.
 
 AGPL section 13 — the network clause — requires that users who interact with the software
