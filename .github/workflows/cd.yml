@@ -51,7 +51,7 @@ jobs:
     # Settings -> Environments. That gate is the manual approval step.
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Deploy to ${{ inputs.environment }}
         run: |
           echo "::error::No ${{ inputs.environment }} environment is deployable yet."
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Roll back ${{ inputs.environment }} to ${{ inputs.target }}
         run: |
           echo "::error::Nothing is deployed to ${{ inputs.environment }}, so there is nothing to roll back to."
