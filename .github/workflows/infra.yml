@@ -51,19 +51,31 @@ jobs:
       - name: Validate
         run: terraform validate
 
-      # A plan needs a Hetzner token and the state bucket's credentials. Until
-      # those secrets exist the plan is skipped rather than failed: the config is
-      # still verified above, and a job that always fails is a job people learn to
-      # ignore. Set the three secrets and this starts running on its own.
+      # A plan needs every input the configuration declares, not just the Hetzner
+      # token: an unset ssh_public_key or allowed_ssh_cidrs fails variable parsing
+      # before it reaches the provider. Until all four are present the plan is
+      # skipped rather than failed — the config is still verified above, and a job
+      # that always fails is a job people learn to ignore.
+      - name: Check whether a plan is possible
+        id: preflight
+        run: |
+          missing=""
+          [ -n "$TF_VAR_hcloud_token" ]      || missing="$missing HCLOUD_TOKEN(secret)"
+          [ -n "$OBJECT_STORAGE_ACCESS_KEY" ] || missing="$missing HETZNER_OBJECT_STORAGE_ACCESS_KEY(secret)"
+          [ -n "$OBJECT_STORAGE_SECRET_KEY" ] || missing="$missing HETZNER_OBJECT_STORAGE_SECRET_KEY(secret)"
+          [ -n "$TF_VAR_ssh_public_key" ]     || missing="$missing INFRA_SSH_PUBLIC_KEY(variable)"
+          [ -n "$TF_VAR_allowed_ssh_cidrs" ]  || missing="$missing INFRA_ALLOWED_SSH_CIDRS(variable)"
+          if [ -z "$missing" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Plan skipped — not configured:$missing. Formatting and validation still ran."
+          fi
+
       - name: Plan
-        if: env.TF_VAR_hcloud_token != '' && env.OBJECT_STORAGE_ACCESS_KEY != ''
+        if: steps.preflight.outputs.ready == 'true'
         run: |
           terraform init -reconfigure \
             -backend-config="access_key=${OBJECT_STORAGE_ACCESS_KEY}" \
             -backend-config="secret_key=${OBJECT_STORAGE_SECRET_KEY}"
           terraform plan -input=false -no-color
-
-      - name: Note when the plan was skipped
-        if: env.TF_VAR_hcloud_token == '' || env.OBJECT_STORAGE_ACCESS_KEY == ''
-        run: |
-          echo "::notice::Plan skipped — HCLOUD_TOKEN and/or the Hetzner Object Storage keys are not set. Formatting and validation still ran."
