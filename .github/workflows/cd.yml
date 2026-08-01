@@ -1,0 +1,81 @@
+name: CD
+
+# Deploy pipeline for US-002. The three real jobs below (dev/staging/prod) are
+# intentionally stubbed — there is no cloud target yet (infra/ has no Terraform,
+# no provider has been chosen; see US-003). Each stub fails loudly on purpose
+# rather than reporting a fake green deploy. Replace the `run` step in each job
+# with the real deploy command once US-003 lands, and delete this comment block.
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment to roll back
+        required: true
+        type: choice
+        options: [dev, staging, production]
+      target:
+        description: Commit SHA or tag to roll back to
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  deploy-dev:
+    name: Deploy — dev
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to dev
+        run: |
+          echo "::error::No dev environment exists yet (US-003 not started — infra/ has no Terraform, no cloud provider chosen)."
+          echo "Replace this step with the real deploy command once infra exists."
+          exit 1
+
+  deploy-staging:
+    name: Deploy — staging
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    # Requires a "staging" environment with required reviewers configured in
+    # repo Settings → Environments — that gate is what makes this a manual approval.
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        run: |
+          echo "::error::No staging environment exists yet (US-003 not started)."
+          exit 1
+
+  deploy-prod:
+    name: Deploy — production
+    needs: deploy-staging
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    # Requires a "production" environment with required reviewers configured in
+    # repo Settings → Environments — that gate is what makes this a manual approval.
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        run: |
+          echo "::error::No production environment exists yet (US-003 not started)."
+          exit 1
+
+  rollback:
+    name: Rollback
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Roll back
+        run: |
+          echo "::error::Rollback target: ${{ inputs.target }} on ${{ inputs.environment }}. No deploy target exists yet (US-003 not started) — nothing to roll back to."
+          exit 1

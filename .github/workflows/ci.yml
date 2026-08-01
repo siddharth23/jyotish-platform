@@ -32,8 +32,8 @@ jobs:
       - name: Scan for committed secrets
         run: ./scripts/check_secrets.sh
 
-  flutter:
-    name: Flutter app
+  flutter-analyse:
+    name: Flutter app — analyse & test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -52,6 +52,36 @@ jobs:
         working-directory: app
         run: flutter test
 
+  flutter-build-android:
+    name: Flutter app — build (Android)
+    runs-on: ubuntu-latest
+    needs: flutter-analyse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - working-directory: app
+        run: flutter pub get
+      - name: Build APK (debug — unsigned)
+        working-directory: app
+        run: flutter build apk --debug
+
+  flutter-build-ios:
+    name: Flutter app — build (iOS)
+    runs-on: macos-latest
+    needs: flutter-analyse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - working-directory: app
+        run: flutter pub get
+      - name: Build (no codesign)
+        working-directory: app
+        run: flutter build ios --debug --no-codesign
+
   api:
     name: API
     runs-on: ubuntu-latest
@@ -66,3 +96,6 @@ jobs:
         run: npm run lint --if-present
       - working-directory: api
         run: npm test --if-present
+      - name: Build
+        working-directory: api
+        run: npm run build --if-present
