@@ -324,4 +324,11 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get profileDesignGallerySubtitle => 'Browse components and colours';
+
+  @override
+  String get evaluationUnavailableTitle => 'Temporarily unavailable';
+
+  @override
+  String get evaluationUnavailableMessage =>
+      'Expert evaluations cannot be ordered right now. Please try again later.';
 }

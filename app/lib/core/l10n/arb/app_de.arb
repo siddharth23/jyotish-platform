@@ -187,5 +187,10 @@
   },
   "routeNotFoundAction": "Zur Startseite",
   "profileDeveloperSection": "Entwicklung",
-  "profileDesignGallerySubtitle": "Komponenten und Farben ansehen"
+  "profileDesignGallerySubtitle": "Komponenten und Farben ansehen",
+  "evaluationUnavailableTitle": "Vorübergehend nicht verfügbar",
+  "@evaluationUnavailableTitle": {
+    "description": "Shown when the paid-evaluation kill switch is off. Deliberately says 'temporarily' and gives no technical reason: the customer does not need to know whether it is a fulfilment problem or an outage."
+  },
+  "evaluationUnavailableMessage": "Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut."
 }

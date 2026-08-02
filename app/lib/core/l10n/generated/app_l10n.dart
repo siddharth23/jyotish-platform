@@ -666,6 +666,18 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Komponenten und Farben ansehen'**
   String get profileDesignGallerySubtitle;
+
+  /// Shown when the paid-evaluation kill switch is off. Deliberately says 'temporarily' and gives no technical reason: the customer does not need to know whether it is a fulfilment problem or an outage.
+  ///
+  /// In de, this message translates to:
+  /// **'Vorübergehend nicht verfügbar'**
+  String get evaluationUnavailableTitle;
+
+  /// No description provided for @evaluationUnavailableMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut.'**
+  String get evaluationUnavailableMessage;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

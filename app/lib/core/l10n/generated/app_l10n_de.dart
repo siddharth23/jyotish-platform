@@ -326,4 +326,11 @@ class AppL10nDe extends AppL10n {
 
   @override
   String get profileDesignGallerySubtitle => 'Komponenten und Farben ansehen';
+
+  @override
+  String get evaluationUnavailableTitle => 'Vorübergehend nicht verfügbar';
+
+  @override
+  String get evaluationUnavailableMessage =>
+      'Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut.';
 }
