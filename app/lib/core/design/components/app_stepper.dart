@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_radii.dart';
 import '../tokens/app_spacing.dart';
@@ -28,7 +30,7 @@ class AppStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final position = 'Schritt $currentStep von $totalSteps';
+    final position = AppL10n.of(context).stepOfTotal(currentStep, totalSteps);
 
     return Semantics(
       label: stepLabel == null ? position : '$position, $stepLabel',

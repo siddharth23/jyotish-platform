@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_spacing.dart';
 import '../tokens/app_typography.dart';
@@ -36,7 +38,9 @@ class AppCheckbox extends StatelessWidget {
         Semantics(
           checked: value,
           enabled: enabled,
-          label: isRequired ? '$label, Pflichtfeld' : label,
+          label: isRequired
+              ? '$label, ${AppL10n.of(context).commonRequiredField}'
+              : label,
           excludeSemantics: true,
           child: InkWell(
             onTap: enabled ? () => onChanged!(!value) : null,

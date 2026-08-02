@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_spacing.dart';
 import '../tokens/app_typography.dart';
@@ -74,7 +76,7 @@ class AppTextField extends StatelessWidget {
               // Marked required in text as well as glyph, so it is not
               // conveyed by a lone asterisk.
               Semantics(
-                label: 'Pflichtfeld',
+                label: AppL10n.of(context).commonRequiredField,
                 child: Text(
                   '*',
                   style: AppTypography.labelSmall.copyWith(color: colors.error),

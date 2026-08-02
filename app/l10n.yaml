@@ -1,0 +1,8 @@
+# German is the template: content is authored in German and translated to
+# English, never the reverse. See CLAUDE.md.
+arb-dir: lib/core/l10n/arb
+template-arb-file: app_de.arb
+output-localization-file: app_l10n.dart
+output-class: AppL10n
+output-dir: lib/core/l10n/generated
+nullable-getter: false

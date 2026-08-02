@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/design/design_system.dart';
+import 'package:jyotish_app/core/l10n/generated/app_l10n.dart';
+import 'package:jyotish_app/core/l10n/locale_controller.dart';
 
-Widget host(Widget child, {Brightness brightness = Brightness.light}) =>
+/// Mirrors the real app: components resolve their accessibility strings from
+/// context, so the localisation delegates are not optional here.
+Widget host(
+  Widget child, {
+  Brightness brightness = Brightness.light,
+  Locale locale = const Locale('de', 'DE'),
+}) =>
     MaterialApp(
       theme: brightness == Brightness.dark ? AppTheme.dark : AppTheme.light,
+      locale: locale,
+      supportedLocales: supportedLocales,
+      localizationsDelegates: const [
+        AppL10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: Scaffold(body: Center(child: SizedBox(width: 360, child: child))),
     );
 

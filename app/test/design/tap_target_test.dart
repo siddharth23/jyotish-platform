@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/design/design_system.dart';
+import 'package:jyotish_app/core/l10n/generated/app_l10n.dart';
+import 'package:jyotish_app/core/l10n/locale_controller.dart';
 
 /// Renders [child] inside the real app theme, constrained like a phone screen.
 Widget _host(Widget child, {Brightness brightness = Brightness.light}) {
   return MaterialApp(
     theme: brightness == Brightness.dark ? AppTheme.dark : AppTheme.light,
+    locale: const Locale('de', 'DE'),
+    supportedLocales: supportedLocales,
+    localizationsDelegates: const [
+      AppL10n.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
     home: Scaffold(
       body: Center(
         child: SizedBox(width: 360, child: child),
@@ -191,6 +202,14 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.light,
+          locale: const Locale('de', 'DE'),
+          supportedLocales: supportedLocales,
+          localizationsDelegates: const [
+            AppL10n.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           home: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
             child: Scaffold(

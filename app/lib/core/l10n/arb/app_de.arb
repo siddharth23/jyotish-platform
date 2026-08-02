@@ -1,0 +1,182 @@
+{
+  "@@locale": "de",
+  "@@x-notes": "Template locale. German is authored here first; en-GB is a translation of this file, never the reverse. See CLAUDE.md.",
+
+  "appTitle": "Jyotish",
+  "@appTitle": {
+    "description": "Product name. Not translated — it is the brand."
+  },
+
+  "commonLoading": "Wird geladen",
+  "@commonLoading": {
+    "description": "Announced by screen readers while a control is busy."
+  },
+
+  "commonClose": "Schließen",
+  "@commonClose": {
+    "description": "Label for a control that dismisses a sheet or dialog."
+  },
+
+  "commonCancel": "Abbrechen",
+  "@commonCancel": {},
+
+  "commonRetry": "Erneut versuchen",
+  "@commonRetry": {},
+
+  "commonRequiredField": "Pflichtfeld",
+  "@commonRequiredField": {
+    "description": "Announced for the asterisk beside a required input label."
+  },
+
+  "commonRemove": "Entfernen",
+  "@commonRemove": {},
+
+  "stepOfTotal": "Schritt {current} von {total}",
+  "@stepOfTotal": {
+    "description": "Position within a multi-step flow.",
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "evaluationCount": "{count, plural, =0{Keine Auswertungen} =1{Eine Auswertung} other{{count} Auswertungen}}",
+  "@evaluationCount": {
+    "description": "Number of expert evaluations. German has no separate dual form, but the zero case reads better as a word than as '0'.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "daysRemaining": "{count, plural, =0{Heute fällig} =1{Noch ein Tag} other{Noch {count} Tage}}",
+  "@daysRemaining": {
+    "description": "Time left before the 72-hour delivery SLA expires.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "settingsLanguage": "Sprache",
+  "@settingsLanguage": {},
+
+  "settingsLanguageSystem": "Systemsprache",
+  "@settingsLanguageSystem": {
+    "description": "Follow the device locale rather than an explicit choice."
+  },
+
+  "settingsLanguageGerman": "Deutsch",
+  "@settingsLanguageGerman": {
+    "description": "Always written in German, in every locale — a language list shows each language in its own name."
+  },
+
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": {
+    "description": "Always written in English, in every locale."
+  },
+
+  "galleryTitle": "Design System",
+  "@galleryTitle": {},
+
+  "gallerySectionColours": "Farben",
+  "gallerySectionTypography": "Typografie",
+  "gallerySectionButtons": "Buttons",
+  "gallerySectionInputs": "Eingaben",
+  "gallerySectionSelection": "Auswahl",
+  "gallerySectionStatus": "Status",
+  "gallerySectionContent": "Inhalte",
+  "gallerySectionLoading": "Ladezustände",
+  "gallerySectionEmpty": "Leerzustände",
+  "gallerySectionOverlays": "Overlays",
+  "gallerySectionFormatting": "Formatierung",
+
+  "galleryThemeDark": "Dunkles Design",
+  "galleryThemeLight": "Helles Design",
+
+  "orderCta": "Auswertung kostenpflichtig bestellen — {price}",
+  "@orderCta": {
+    "description": "Primary paid action. The price is formatted for the active locale.",
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+
+  "fieldBirthPlace": "Geburtsort",
+  "fieldBirthPlaceHint": "z. B. München",
+  "fieldBirthPlaceHelper": "Stadt und Land",
+  "fieldBirthTime": "Geburtszeit",
+  "fieldBirthTimeError": "Bitte eine gültige Uhrzeit eingeben",
+  "fieldBirthDate": "Geburtsdatum",
+
+  "chartStyleNorth": "Nord",
+  "chartStyleSouth": "Süd",
+  "chartStyleWestern": "Westlich",
+
+  "ayanamsaLabel": "Ayanamsa",
+  "ayanamsaLahiriDescription": "Chitrapaksha — Standard",
+
+  "houseSystemLabel": "Haussystem",
+  "houseSystemWholeSign": "Ganzzeichen",
+
+  "prefsDailyPanchang": "Tägliches Panchang",
+  "prefsDailyPanchangDescription": "Benachrichtigung jeden Morgen um 7 Uhr",
+
+  "consentWithdrawal": "Ich stimme zu, dass die Auswertung sofort beginnt und mein Widerrufsrecht damit erlischt.",
+  "@consentWithdrawal": {
+    "description": "Checkout consent. Wording is legally load-bearing — do not paraphrase without a lawyer."
+  },
+
+  "statusDraft": "ENTWURF",
+  "statusPaid": "BEZAHLT",
+  "statusInProgress": "IN ARBEIT",
+  "statusSlaRisk": "SLA-RISIKO",
+  "statusCancelled": "STORNIERT",
+  "statusExpert": "EXPERTE",
+
+  "bannerDeliveryTitle": "Lieferfrist",
+  "bannerDeliveryMessage": "Deine Auswertung wird in bis zu 72 Stunden geliefert.",
+  "bannerPaymentFailed": "Zahlung fehlgeschlagen. Bitte Zahlungsart prüfen.",
+
+  "progressPdf": "PDF wird erstellt",
+
+  "emptyChartTitle": "Noch keine Kundali",
+  "emptyChartMessage": "Lege deine Geburtsdaten an, um dein Chart zu sehen.",
+  "emptyChartAction": "Geburtsdaten eingeben",
+
+  "errorGenericTitle": "Etwas ist schiefgelaufen",
+  "errorEvaluationMessage": "Die Auswertung konnte nicht geladen werden.",
+
+  "dialogCancelOrderTitle": "Bestellung stornieren?",
+  "dialogCancelOrderMessage": "Die Auswertung wird nicht erstellt und du erhältst den Betrag zurück.",
+  "dialogCancelOrderConfirm": "Ja, stornieren",
+
+  "navChart": "Kundali",
+  "navCareer": "Karriere",
+  "navEvaluation": "Auswertung",
+  "navProfile": "Profil",
+
+  "labelAscendant": "Aszendent",
+  "labelMoon": "Mond",
+  "labelMahadasha": "Mahadasha",
+  "labelPrice": "Preis",
+  "labelOrderedAt": "Bestellt am",
+  "labelDeliverBy": "Lieferung bis",
+
+  "astrologerRole": "Astrologin",
+  "@astrologerRole": {
+    "description": "Feminine form, for the sample astrologer in the gallery. Real screens must pick the form matching the person."
+  },
+
+  "snackSaved": "Gespeichert.",
+  "snackDemoOnly": "Nur eine Demo — es wurde nichts bestellt.",
+
+  "galleryDialogButton": "Dialog",
+  "galleryBottomSheetButton": "Bottom Sheet",
+  "gallerySnackbarButton": "Snackbar",
+  "galleryButtonPrimary": "Primär",
+  "galleryButtonSecondary": "Sekundär",
+  "galleryButtonTertiary": "Tertiär",
+  "galleryButtonDestructive": "Löschen",
+  "galleryButtonDisabled": "Deaktiviert",
+  "galleryButtonLoading": "Lädt",
+  "galleryTabularFigures": "Tabellenziffern"
+}

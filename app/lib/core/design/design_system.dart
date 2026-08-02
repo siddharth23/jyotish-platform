@@ -3,26 +3,13 @@
 /// Screens import this one file rather than reaching into `tokens/`,
 /// `theme/` or `components/` directly.
 ///
-/// ## Known debt: five hardcoded German strings
+/// ## Localisation
 ///
-/// `CLAUDE.md` requires UI strings to be externalised via ICU, and these are not.
-/// They are accessibility affordances that a component cannot function without and
-/// that a caller should not have to supply on every use:
-///
-/// | String | Where |
-/// |---|---|
-/// | `Wird geladen` | [AppButton] loading hint, [AppProgressIndicator] |
-/// | `Pflichtfeld` | [AppTextField] required marker |
-/// | `Schritt N von M` | [AppStepper] position |
-/// | `Schliessen` | [AppBottomSheet] close control |
-///
-/// `lib/core/l10n/` is still empty, so there is nothing to externalise them into
-/// yet. **When localisation lands (epic E09), move these to ICU and delete this
-/// section.** Until then a screen reader announces them in German regardless of
-/// device language, which is wrong for the en-GB locale the product also ships.
-///
-/// Every other string in this library is passed in by the caller, so the debt does
-/// not grow as screens are built on top.
+/// Components resolve their own accessibility strings — the loading hint, the
+/// required-field marker, the stepper position, the sheet close control — from
+/// `AppL10n`. **A host `MaterialApp` must therefore install
+/// `AppL10n.delegate` and `supportedLocales`**, or those lookups throw. Every
+/// other string is caller-supplied.
 library;
 
 export 'components/app_avatar.dart';

@@ -26,7 +26,9 @@ void main() {
       await tester.pumpWidget(subject());
       await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(DesignGallery), findsOneWidget);
-      expect(find.text('Design System'), findsOneWidget);
+      // The title is localised and the test host follows the device locale, so
+      // match the shared substring rather than one locale's exact casing.
+      expect(find.textContaining('Design'), findsWidgets);
     });
   });
 }
