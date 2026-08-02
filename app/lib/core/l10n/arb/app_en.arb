@@ -95,5 +95,7 @@
   "routeNotFoundMessage": "The link {location} does not go anywhere.",
   "routeNotFoundAction": "Go to start",
   "profileDeveloperSection": "Development",
-  "profileDesignGallerySubtitle": "Browse components and colours"
+  "profileDesignGallerySubtitle": "Browse components and colours",
+  "evaluationUnavailableTitle": "Temporarily unavailable",
+  "evaluationUnavailableMessage": "Expert evaluations cannot be ordered right now. Please try again later."
 }

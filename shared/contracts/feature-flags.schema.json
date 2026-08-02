@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/siddharth23/jyotish-platform/blob/main/shared/contracts/feature-flags.schema.json",
+  "title": "Feature flag rule set",
+  "description": "The document the API serves and clients evaluate locally. Evaluation happens on the client so a flag can be read with no network, using the last cached document; the cost is that a change reaches users only on their next fetch.",
+  "type": "object",
+  "required": ["version", "issuedAt", "flags"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Increments on every published change. A client must ignore a document older than the one it has cached, or a stale CDN edge could resurrect a killed flag."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "flags": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/flag" }
+    }
+  },
+  "$defs": {
+    "flag": {
+      "type": "object",
+      "required": ["key", "enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Stable identifier. Clients hold a compiled-in default for keys they know; an unknown key is ignored rather than treated as off."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "The base value, applied when no segment or rollout rule matches."
+        },
+        "description": { "type": "string" },
+        "rollout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of users the flag is on for, when `enabled` is true. Bucketing is deterministic per user and per flag, so a user does not flip between sessions and is not in the same bucket for every flag."
+        },
+        "segments": {
+          "type": "array",
+          "description": "Evaluated in order; the first match wins and short-circuits the rollout.",
+          "items": { "$ref": "#/$defs/segment" }
+        }
+      }
+    },
+    "segment": {
+      "type": "object",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "value": {
+          "type": "boolean",
+          "description": "What the flag evaluates to for users matching this segment."
+        },
+        "locales": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Language codes, e.g. ['de']."
+        },
+        "platforms": {
+          "type": "array",
+          "items": { "enum": ["android", "ios"] }
+        },
+        "minAppVersion": {
+          "type": "string",
+          "description": "Inclusive lower bound, semver-ish 'major.minor.patch'."
+        },
+        "maxAppVersion": {
+          "type": "string",
+          "description": "Inclusive upper bound. Lets a flag be turned off for versions with a known bug without a store release."
+        },
+        "userIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Explicit allow-list, for testing a flag on named accounts before any rollout."
+        },
+        "internalOnly": {
+          "type": "boolean",
+          "description": "Matches only staff builds."
+        }
+      }
+    }
+  }
+}
