@@ -28,6 +28,8 @@ REQUIRED = {
     "JyotishApiLatencyP99": ("> 2", "AC3 requires alerting when p99 exceeds 2s"),
     "JyotishApiErrorRate": ("> 0.01", "AC3 requires alerting when 5xx exceeds 1%"),
     "JyotishPaymentFailureRate": ("payment_attempts_total", "AC3 requires payment failure alerting"),
+    # US-008 AC3.
+    "JyotishCrashFreeRate": ("< 99.0", "US-008 AC3 requires alerting below 99% crash-free"),
     # Not from AC3, but the rule that makes the rest trustworthy.
     "JyotishMetricsAbsent": ("absent(", "the deadman switch must survive edits"),
 }

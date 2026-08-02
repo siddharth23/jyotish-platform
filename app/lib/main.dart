@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,9 +10,29 @@ import 'core/design/theme/theme_controller.dart';
 import 'core/l10n/generated/app_l10n.dart';
 import 'core/l10n/locale_controller.dart';
 import 'core/navigation/app_router.dart';
+import 'core/observability/observability_providers.dart';
 
 void main() {
-  runApp(const ProviderScope(child: JyotishApp()));
+  // Required before anything touches a platform channel. The observability
+  // start-up below reads SharedPreferences, which throws "Binding has not yet
+  // been initialized" without this. Widget tests install their own binding, so
+  // the whole suite passed while the app failed on a real device.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final container = ProviderContainer();
+
+  // Started, not awaited. Cold start is already near the 2.5s budget flagged in
+  // US-005, and nothing here needs to finish before the first frame — an error
+  // in the first moments is buffered by the crash reporter regardless, because
+  // consent cannot have been granted yet.
+  unawaited(initialiseObservability(container));
+
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const JyotishApp(),
+    ),
+  );
 }
 
 /// Application root.
