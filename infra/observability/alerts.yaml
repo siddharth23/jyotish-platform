@@ -1,0 +1,131 @@
+# Alert rules for US-007 AC3.
+#
+# NOT DEPLOYED. There is no Grafana Cloud account, no Prometheus, and the API
+# emits no metrics yet — every series referenced here is currently absent. The
+# rules are defined now so the thresholds are reviewable and version-controlled
+# rather than invented during an incident, and so that turning them on is a
+# configuration step rather than a design exercise.
+#
+# The danger of shipping alerts against absent metrics is that they never fire
+# and everyone assumes they are working. `JyotishMetricsAbsent` below is the
+# deadman switch that catches exactly that; it should be the first rule enabled
+# and the last one silenced.
+#
+# Thresholds come from US-007 AC3 and are asserted by
+# scripts/check_alert_thresholds.py, so loosening one fails the build rather
+# than passing quietly in a busy week.
+
+groups:
+  - name: jyotish-availability
+    interval: 30s
+    rules:
+      # --- AC3: p99 latency over 2s -----------------------------------------
+      - alert: JyotishApiLatencyP99
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum by (le, route) (rate(http_request_duration_seconds_bucket[5m]))
+          ) > 2
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "p99 latency above 2s on {{ $labels.route }}"
+          description: >-
+            Sustained for five minutes. Chart computation is client-side, so a
+            slow API means storage, payment or fulfilment rather than
+            calculation. Check the database first.
+          runbook: docs/RUNBOOKS.md
+
+      # --- AC3: 5xx rate over 1% --------------------------------------------
+      - alert: JyotishApiErrorRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+            / sum(rate(http_requests_total[5m])) > 0.01
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "5xx rate above 1%"
+          description: >-
+            One request in a hundred is failing. At launch volumes this is a
+            handful of customers, several of whom are mid-checkout.
+          runbook: docs/RUNBOOKS.md
+
+      # --- AC3: payment failures --------------------------------------------
+      # Two rules, because payments fail in two different ways and only one of
+      # them is our fault.
+      - alert: JyotishPaymentFailureRate
+        expr: |
+          sum(rate(payment_attempts_total{result="failed"}[15m]))
+            / sum(rate(payment_attempts_total[15m])) > 0.05
+        for: 10m
+        labels:
+          severity: page
+        annotations:
+          summary: "More than 5% of payment attempts failing"
+          description: >-
+            Declines are normal; a sustained rate is not. Check the Stripe
+            status page before assuming it is us. The paid-evaluation kill
+            switch (US-006) stops new orders without a store release.
+          runbook: docs/RUNBOOKS.md
+
+      - alert: JyotishPaymentWebhookLag
+        expr: |
+          max(payment_webhook_lag_seconds) > 900
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "Stripe webhooks lagging over 15 minutes"
+          description: >-
+            Verified webhooks are the only source of truth for "paid". Lag means
+            customers have been charged and see nothing. SEPA settles
+            asynchronously, so some lag is expected — this threshold is well
+            above normal.
+          runbook: docs/RUNBOOKS.md
+
+  - name: jyotish-fulfilment
+    interval: 60s
+    rules:
+      - alert: JyotishQueueDepth
+        expr: max by (queue) (job_queue_depth) > 100
+        for: 15m
+        labels:
+          severity: ticket
+        annotations:
+          summary: "{{ $labels.queue }} backing up"
+          description: >-
+            PDF generation is CPU-bound and stateless, so this is usually a
+            scaling problem rather than a stuck job.
+          runbook: docs/RUNBOOKS.md
+
+      - alert: JyotishSlaAtRisk
+        expr: min(evaluation_hours_remaining) < 12
+        for: 5m
+        labels:
+          severity: ticket
+        annotations:
+          summary: "An evaluation is within 12 hours of its 72h SLA"
+          description: >-
+            Automatic warnings fire at 48h, 60h and 70h and reassignment at 66h.
+            This alert means those did not resolve it.
+          runbook: docs/RUNBOOKS.md
+
+  - name: jyotish-meta
+    interval: 60s
+    rules:
+      # The deadman switch. Alerts that reference absent series never fire, and
+      # silence is indistinguishable from health — which is the failure mode
+      # this whole file would otherwise have on day one.
+      - alert: JyotishMetricsAbsent
+        expr: absent(up{job="jyotish-api"}) == 1
+        for: 10m
+        labels:
+          severity: page
+        annotations:
+          summary: "No metrics from the API for ten minutes"
+          description: >-
+            Either the service is down or the scrape is broken. Both mean every
+            other alert in this file is now blind.
+          runbook: docs/RUNBOOKS.md

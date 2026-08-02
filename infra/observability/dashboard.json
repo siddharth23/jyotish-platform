@@ -1,0 +1,139 @@
+{
+  "__comment": "Grafana dashboard for US-007 AC2. NOT DEPLOYED — there is no Grafana Cloud account and the API emits none of these series yet. Defined as code so the panels are reviewable and provisioning is a configuration step rather than someone assembling a dashboard by hand during an incident. Import via Grafana's provisioning API once a stack exists.",
+  "title": "Jyotish — service health",
+  "uid": "jyotish-service-health",
+  "timezone": "Europe/Berlin",
+  "refresh": "1m",
+  "time": { "from": "now-6h", "to": "now" },
+  "tags": ["jyotish", "us-007"],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request latency",
+      "description": "p50, p95 and p99. The p99 line is what JyotishApiLatencyP99 alerts on at 2s.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 2 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "p99"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Error rate",
+      "description": "Share of requests returning 5xx. Alert threshold is 1%.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 0.01 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+          "legendFormat": "5xx share"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Queue depth",
+      "description": "PDF rendering and notification queues. Backlog here becomes an SLA breach within hours.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "fieldConfig": { "defaults": { "unit": "short" } },
+      "targets": [
+        {
+          "expr": "max by (queue) (job_queue_depth)",
+          "legendFormat": "{{queue}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Payment outcomes",
+      "description": "Succeeded against failed. Declines are normal; a sustained failure share is not.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "fieldConfig": { "defaults": { "unit": "reqps" } },
+      "targets": [
+        {
+          "expr": "sum by (result) (rate(payment_attempts_total[15m]))",
+          "legendFormat": "{{result}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Evaluations against the 72h SLA",
+      "description": "Hours remaining on the closest-to-breach open evaluation.",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 16 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 12 },
+              { "color": "green", "value": 24 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        { "expr": "min(evaluation_hours_remaining)", "legendFormat": "closest to breach" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Webhook lag",
+      "description": "Verified Stripe webhooks are the only source of truth for 'paid'. Lag means customers charged but not served.",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 16 },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "targets": [
+        { "expr": "max(payment_webhook_lag_seconds)", "legendFormat": "lag" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Scrape health",
+      "description": "If this is empty, every other panel and alert on this dashboard is blind rather than healthy.",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 16 },
+      "targets": [{ "expr": "up{job=\"jyotish-api\"}", "legendFormat": "api" }]
+    }
+  ]
+}
