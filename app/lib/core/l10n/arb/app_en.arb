@@ -97,5 +97,17 @@
   "profileDeveloperSection": "Development",
   "profileDesignGallerySubtitle": "Browse components and colours",
   "evaluationUnavailableTitle": "Temporarily unavailable",
-  "evaluationUnavailableMessage": "Expert evaluations cannot be ordered right now. Please try again later."
+  "evaluationUnavailableMessage": "Expert evaluations cannot be ordered right now. Please try again later.",
+  "onboardingSkip": "Skip",
+  "onboardingNext": "Next",
+  "onboardingStart": "Get started",
+  "onboardingProgress": "Page {current} of {total}",
+  "onboardingWelcomeTitle": "Welcome to Jyotish",
+  "onboardingWelcomeBody": "Vedic astrology, carefully calculated and clearly explained.",
+  "onboardingChartTitle": "Your kundali — free",
+  "onboardingChartBody": "Enter your birth details and see your full birth chart with grahas, houses and dashas. No cost, no account.",
+  "onboardingCareerTitle": "Career fit — free",
+  "onboardingCareerBody": "See which industries suit your chart. For you personally, never for employers.",
+  "onboardingExpertTitle": "Expert evaluation — {price}",
+  "onboardingExpertBody": "A personal reading written by a real astrologer, delivered as a PDF within 72 hours. Optional, whenever you want it."
 }

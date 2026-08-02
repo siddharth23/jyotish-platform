@@ -192,5 +192,39 @@
   "@evaluationUnavailableTitle": {
     "description": "Shown when the paid-evaluation kill switch is off. Deliberately says 'temporarily' and gives no technical reason: the customer does not need to know whether it is a fulfilment problem or an outage."
   },
-  "evaluationUnavailableMessage": "Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut."
+  "evaluationUnavailableMessage": "Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut.",
+  "onboardingSkip": "Überspringen",
+  "onboardingNext": "Weiter",
+  "onboardingStart": "Los geht's",
+  "onboardingProgress": "Seite {current} von {total}",
+  "@onboardingProgress": {
+    "description": "Announced by screen readers; a row of dots says nothing aloud.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingWelcomeTitle": "Willkommen bei Jyotish",
+  "onboardingWelcomeBody": "Vedische Astrologie, sorgfältig berechnet und auf Deutsch erklärt.",
+  "onboardingChartTitle": "Dein Kundali — kostenlos",
+  "onboardingChartBody": "Gib deine Geburtsdaten ein und sieh dein vollständiges Geburtshoroskop mit Grahas, Häusern und Dashas. Ohne Kosten, ohne Konto.",
+  "onboardingCareerTitle": "Berufliche Ausrichtung — kostenlos",
+  "onboardingCareerBody": "Sieh, welche Branchen zu deinem Chart passen. Nur für dich persönlich, nicht für Arbeitgeber.",
+  "@onboardingCareerBody": {
+    "description": "The personal-use framing is load-bearing: docs/adr/0005 keeps this feature out of EU AI Act recruitment scope. Do not soften it."
+  },
+  "onboardingExpertTitle": "Expertenauswertung — {price}",
+  "@onboardingExpertTitle": {
+    "description": "Price is formatted for the locale — 11,00 EUR in German. Never interpolate it as a bare number.",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingExpertBody": "Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit."
 }

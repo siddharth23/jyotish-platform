@@ -333,4 +333,48 @@ class AppL10nDe extends AppL10n {
   @override
   String get evaluationUnavailableMessage =>
       'Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut.';
+
+  @override
+  String get onboardingSkip => 'Überspringen';
+
+  @override
+  String get onboardingNext => 'Weiter';
+
+  @override
+  String get onboardingStart => 'Los geht\'s';
+
+  @override
+  String onboardingProgress(int current, int total) {
+    return 'Seite $current von $total';
+  }
+
+  @override
+  String get onboardingWelcomeTitle => 'Willkommen bei Jyotish';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Vedische Astrologie, sorgfältig berechnet und auf Deutsch erklärt.';
+
+  @override
+  String get onboardingChartTitle => 'Dein Kundali — kostenlos';
+
+  @override
+  String get onboardingChartBody =>
+      'Gib deine Geburtsdaten ein und sieh dein vollständiges Geburtshoroskop mit Grahas, Häusern und Dashas. Ohne Kosten, ohne Konto.';
+
+  @override
+  String get onboardingCareerTitle => 'Berufliche Ausrichtung — kostenlos';
+
+  @override
+  String get onboardingCareerBody =>
+      'Sieh, welche Branchen zu deinem Chart passen. Nur für dich persönlich, nicht für Arbeitgeber.';
+
+  @override
+  String onboardingExpertTitle(String price) {
+    return 'Expertenauswertung — $price';
+  }
+
+  @override
+  String get onboardingExpertBody =>
+      'Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit.';
 }

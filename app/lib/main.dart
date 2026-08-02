@@ -8,6 +8,7 @@ import 'core/design/theme/theme_controller.dart';
 import 'core/l10n/generated/app_l10n.dart';
 import 'core/l10n/locale_controller.dart';
 import 'core/navigation/app_router.dart';
+import 'features/onboarding/onboarding_controller.dart';
 
 void main() {
   runApp(const ProviderScope(child: JyotishApp()));
@@ -31,10 +32,35 @@ class JyotishApp extends ConsumerStatefulWidget {
 }
 
 class _JyotishAppState extends ConsumerState<JyotishApp> {
-  late final GoRouter _router = createRouter();
+  /// Nudges the router when onboarding status resolves.
+  ///
+  /// The status is unknown for the first frames while storage is read, and the
+  /// redirect that would send a new user to the carousel has already run by
+  /// then. This tells go_router to evaluate again.
+  final ValueNotifier<OnboardingStatus> _onboardingRefresh =
+      ValueNotifier(OnboardingStatus.unknown);
+
+  late final GoRouter _router = createRouter(
+    refreshListenable: _onboardingRefresh,
+    // Read, not watched: rebuilding the router would reset the navigation
+    // stack. go_router re-runs redirect on every navigation, so reading the
+    // current value each time is enough.
+    onboardingStatus: () => ref.read(onboardingControllerProvider),
+  );
+
+  @override
+  void dispose() {
+    _onboardingRefresh.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<OnboardingStatus>(
+      onboardingControllerProvider,
+      (_, next) => _onboardingRefresh.value = next,
+    );
+
     // Null means "follow the device", which is what MaterialApp does when the
     // property is omitted.
     final localePreference = ref.watch(localeControllerProvider);

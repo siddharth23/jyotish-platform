@@ -14,6 +14,10 @@ abstract final class AppRoutes {
   /// A single evaluation, as linked from its delivery email.
   static const String evaluationDetail = '/auswertung/:orderId';
 
+  /// First-run onboarding. Not deep-linkable from outside the app; it is
+  /// reached by redirect, and left by completing it.
+  static const String onboarding = '/onboarding';
+
   /// The design system gallery. Not product surface — reachable by URL so it can
   /// be opened on a device during review, but not linked from any screen.
   static const String designGallery = '/design';

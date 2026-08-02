@@ -331,4 +331,48 @@ class AppL10nEn extends AppL10n {
   @override
   String get evaluationUnavailableMessage =>
       'Expert evaluations cannot be ordered right now. Please try again later.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingStart => 'Get started';
+
+  @override
+  String onboardingProgress(int current, int total) {
+    return 'Page $current of $total';
+  }
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to Jyotish';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Vedic astrology, carefully calculated and clearly explained.';
+
+  @override
+  String get onboardingChartTitle => 'Your kundali — free';
+
+  @override
+  String get onboardingChartBody =>
+      'Enter your birth details and see your full birth chart with grahas, houses and dashas. No cost, no account.';
+
+  @override
+  String get onboardingCareerTitle => 'Career fit — free';
+
+  @override
+  String get onboardingCareerBody =>
+      'See which industries suit your chart. For you personally, never for employers.';
+
+  @override
+  String onboardingExpertTitle(String price) {
+    return 'Expert evaluation — $price';
+  }
+
+  @override
+  String get onboardingExpertBody =>
+      'A personal reading written by a real astrologer, delivered as a PDF within 72 hours. Optional, whenever you want it.';
 }
