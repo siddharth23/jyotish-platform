@@ -678,6 +678,78 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Expertenauswertungen können gerade nicht bestellt werden. Bitte versuche es später erneut.'**
   String get evaluationUnavailableMessage;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In de, this message translates to:
+  /// **'Überspringen'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiter'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In de, this message translates to:
+  /// **'Los geht\'s'**
+  String get onboardingStart;
+
+  /// Announced by screen readers; a row of dots says nothing aloud.
+  ///
+  /// In de, this message translates to:
+  /// **'Seite {current} von {total}'**
+  String onboardingProgress(int current, int total);
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Willkommen bei Jyotish'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Vedische Astrologie, sorgfältig berechnet und auf Deutsch erklärt.'**
+  String get onboardingWelcomeBody;
+
+  /// No description provided for @onboardingChartTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Kundali — kostenlos'**
+  String get onboardingChartTitle;
+
+  /// No description provided for @onboardingChartBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Gib deine Geburtsdaten ein und sieh dein vollständiges Geburtshoroskop mit Grahas, Häusern und Dashas. Ohne Kosten, ohne Konto.'**
+  String get onboardingChartBody;
+
+  /// No description provided for @onboardingCareerTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Berufliche Ausrichtung — kostenlos'**
+  String get onboardingCareerTitle;
+
+  /// The personal-use framing is load-bearing: docs/adr/0005 keeps this feature out of EU AI Act recruitment scope. Do not soften it.
+  ///
+  /// In de, this message translates to:
+  /// **'Sieh, welche Branchen zu deinem Chart passen. Nur für dich persönlich, nicht für Arbeitgeber.'**
+  String get onboardingCareerBody;
+
+  /// Price is formatted for the locale — 11,00 EUR in German. Never interpolate it as a bare number.
+  ///
+  /// In de, this message translates to:
+  /// **'Expertenauswertung — {price}'**
+  String onboardingExpertTitle(String price);
+
+  /// No description provided for @onboardingExpertBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit.'**
+  String get onboardingExpertBody;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

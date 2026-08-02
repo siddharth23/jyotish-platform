@@ -6,6 +6,8 @@ import '../../features/chart/presentation/chart_screen.dart';
 import '../../features/evaluation/presentation/evaluation_detail_screen.dart';
 import '../../features/evaluation/presentation/evaluation_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/onboarding/onboarding_controller.dart';
+import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../design/design_system.dart';
 import '../design/gallery/design_gallery.dart';
@@ -18,10 +20,38 @@ import 'app_shell.dart';
 /// A function rather than a top-level constant so tests can construct an
 /// isolated router with their own initial location. A shared instance would
 /// leak navigation state between tests.
-GoRouter createRouter({String initialLocation = AppRoutes.home}) {
+GoRouter createRouter({
+  String initialLocation = AppRoutes.home,
+  OnboardingStatus Function()? onboardingStatus,
+  Listenable? refreshListenable,
+}) {
+  // Where the user was heading when onboarding interrupted them. A deep link
+  // to a paid evaluation must survive a first run, not be swallowed by the
+  // carousel.
+  String? pendingDestination;
+
   return GoRouter(
     initialLocation: initialLocation,
-    redirect: _normaliseCustomScheme,
+    // Onboarding status starts unknown while storage is read. Without a
+    // refresh signal the redirect below runs once, passes through, and the
+    // carousel never appears for a genuine first run — the status arrives after
+    // the only navigation that would have consulted it.
+    refreshListenable: refreshListenable,
+    redirect: (context, state) {
+      final normalised = normaliseDeepLink(state.uri);
+      if (normalised != null) return normalised;
+
+      final status = onboardingStatus?.call() ?? OnboardingStatus.completed;
+      final location = state.uri.toString();
+
+      // Unknown means storage has not answered. Redirecting on it would flash
+      // the carousel at a returning user on every cold start, so it waits.
+      if (status != OnboardingStatus.notCompleted) return null;
+      if (location == AppRoutes.onboarding) return null;
+
+      pendingDestination = location == AppRoutes.home ? null : location;
+      return AppRoutes.onboarding;
+    },
     // Deep links that do not match anything must land somewhere explicable.
     // The default is a raw exception page, which is what a customer would see
     // after tapping a mistyped link in a delivery email.
@@ -85,6 +115,17 @@ GoRouter createRouter({String initialLocation = AppRoutes.home}) {
           ),
         ],
       ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => OnboardingScreen(
+          onFinished: () {
+            // Resume the interrupted destination, or land on Home.
+            final destination = pendingDestination ?? AppRoutes.home;
+            pendingDestination = null;
+            GoRouter.of(context).go(destination);
+          },
+        ),
+      ),
       // Outside the shell: full screen, with its own back affordance.
       GoRoute(
         path: AppRoutes.designGallery,
@@ -119,9 +160,6 @@ String? normaliseDeepLink(Uri uri) {
     queryParameters: uri.queryParameters.isEmpty ? null : uri.queryParameters,
   ).toString();
 }
-
-String? _normaliseCustomScheme(BuildContext context, GoRouterState state) =>
-    normaliseDeepLink(state.uri);
 
 /// Shown for a link that matches no route.
 class _RouteNotFound extends StatelessWidget {
