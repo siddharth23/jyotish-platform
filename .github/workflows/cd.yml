@@ -52,11 +52,18 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v7
+      # Mobile artefacts must be built through scripts/build_release.sh, which
+      # produces the obfuscation symbols and refuses to hand back a build
+      # without them. Symbols cannot be regenerated after the fact, so they
+      # have to be archived here — a released build whose symbols were lost has
+      # permanently unreadable crash reports (US-008 AC2).
       - name: Deploy to ${{ inputs.environment }}
         run: |
           echo "::error::No ${{ inputs.environment }} environment is deployable yet."
           echo "US-003 provisions the host; api/src/main.ts is still an unimplemented stub."
           echo "Replace this step with the real deploy command once both exist."
+          echo "For mobile: use scripts/build_release.sh and upload app/build/symbols"
+          echo "to the crash reporter before the artefact reaches any user."
           exit 1
 
   rollback:

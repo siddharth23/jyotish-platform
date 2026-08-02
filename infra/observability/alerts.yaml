@@ -112,6 +112,45 @@ groups:
             This alert means those did not resolve it.
           runbook: docs/RUNBOOKS.md
 
+  - name: jyotish-mobile
+    interval: 300s
+    rules:
+      # --- US-008 AC3: crash-free sessions below 99% ------------------------
+      - alert: JyotishCrashFreeRate
+        # Guarded by a session count. One crash in a release's first three
+        # sessions is 67% and means nothing; alerting on it would page someone
+        # on every release.
+        expr: |
+          (
+            sum by (app_version) (rate(app_sessions_total{outcome="clean"}[1h]))
+              / sum by (app_version) (rate(app_sessions_total[1h]))
+          ) * 100 < 99.0
+          and sum by (app_version) (increase(app_sessions_total[1h])) > 50
+        for: 30m
+        labels:
+          severity: page
+        annotations:
+          summary: "Crash-free sessions below 99% on {{ $labels.app_version }}"
+          description: >-
+            A stability regression. Check whether the version is still rolling
+            out before halting it — a staged release can be paused in the store
+            without a new build.
+          runbook: docs/RUNBOOKS.md
+
+      - alert: JyotishAnrRate
+        expr: |
+          sum by (app_version) (rate(app_anr_total[1h]))
+            / sum by (app_version) (rate(app_sessions_total[1h])) > 0.005
+        for: 30m
+        labels:
+          severity: ticket
+        annotations:
+          summary: "ANR rate above 0.5% on {{ $labels.app_version }}"
+          description: >-
+            Google Play degrades store ranking above its own ANR threshold, so
+            this is a distribution problem as well as a quality one.
+          runbook: docs/RUNBOOKS.md
+
   - name: jyotish-meta
     interval: 60s
     rules:
