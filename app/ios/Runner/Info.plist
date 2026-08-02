@@ -14,6 +14,17 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>de.jyotish.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>jyotish</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleName</key>
 	<string>Jyotish</string>
 	<key>CFBundlePackageType</key>

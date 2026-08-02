@@ -1,29 +1,21 @@
 {
   "@@locale": "en",
   "@@x-notes": "en-GB translation of app_de.arb. British spelling. Metadata lives in the German template; only values are translated here.",
-
   "appTitle": "Jyotish",
-
   "commonLoading": "Loading",
   "commonClose": "Close",
   "commonCancel": "Cancel",
   "commonRetry": "Try again",
   "commonRequiredField": "Required field",
   "commonRemove": "Remove",
-
   "stepOfTotal": "Step {current} of {total}",
-
   "evaluationCount": "{count, plural, =0{No evaluations} =1{One evaluation} other{{count} evaluations}}",
-
   "daysRemaining": "{count, plural, =0{Due today} =1{One day left} other{{count} days left}}",
-
   "settingsLanguage": "Language",
   "settingsLanguageSystem": "System language",
   "settingsLanguageGerman": "Deutsch",
   "settingsLanguageEnglish": "English",
-
   "galleryTitle": "Design system",
-
   "gallerySectionColours": "Colours",
   "gallerySectionTypography": "Typography",
   "gallerySectionButtons": "Buttons",
@@ -35,75 +27,56 @@
   "gallerySectionEmpty": "Empty states",
   "gallerySectionOverlays": "Overlays",
   "gallerySectionFormatting": "Formatting",
-
   "galleryThemeDark": "Dark theme",
   "galleryThemeLight": "Light theme",
-
   "orderCta": "Order expert evaluation — {price}",
-
   "fieldBirthPlace": "Place of birth",
   "fieldBirthPlaceHint": "e.g. Munich",
   "fieldBirthPlaceHelper": "City and country",
   "fieldBirthTime": "Time of birth",
   "fieldBirthTimeError": "Please enter a valid time",
   "fieldBirthDate": "Date of birth",
-
   "chartStyleNorth": "North",
   "chartStyleSouth": "South",
   "chartStyleWestern": "Western",
-
   "ayanamsaLabel": "Ayanamsa",
   "ayanamsaLahiriDescription": "Chitrapaksha — default",
-
   "houseSystemLabel": "House system",
   "houseSystemWholeSign": "Whole sign",
-
   "prefsDailyPanchang": "Daily panchang",
   "prefsDailyPanchangDescription": "A notification every morning at 7 am",
-
   "consentWithdrawal": "I agree that work begins immediately and that my right of withdrawal thereby lapses.",
-
   "statusDraft": "DRAFT",
   "statusPaid": "PAID",
   "statusInProgress": "IN PROGRESS",
   "statusSlaRisk": "SLA RISK",
   "statusCancelled": "CANCELLED",
   "statusExpert": "EXPERT",
-
   "bannerDeliveryTitle": "Delivery time",
   "bannerDeliveryMessage": "Your evaluation will be delivered within 72 hours.",
   "bannerPaymentFailed": "Payment failed. Please check your payment method.",
-
   "progressPdf": "Generating PDF",
-
   "emptyChartTitle": "No kundali yet",
   "emptyChartMessage": "Add your birth details to see your chart.",
   "emptyChartAction": "Enter birth details",
-
   "errorGenericTitle": "Something went wrong",
   "errorEvaluationMessage": "The evaluation could not be loaded.",
-
   "dialogCancelOrderTitle": "Cancel this order?",
   "dialogCancelOrderMessage": "The evaluation will not be produced and you will be refunded.",
   "dialogCancelOrderConfirm": "Yes, cancel it",
-
   "navChart": "Kundali",
   "navCareer": "Career",
   "navEvaluation": "Evaluation",
   "navProfile": "Profile",
-
   "labelAscendant": "Ascendant",
   "labelMoon": "Moon",
   "labelMahadasha": "Mahadasha",
   "labelPrice": "Price",
   "labelOrderedAt": "Ordered on",
   "labelDeliverBy": "Deliver by",
-
   "astrologerRole": "Astrologer",
-
   "snackSaved": "Saved.",
   "snackDemoOnly": "Demo only — nothing was ordered.",
-
   "galleryDialogButton": "Dialog",
   "galleryBottomSheetButton": "Bottom sheet",
   "gallerySnackbarButton": "Snackbar",
@@ -113,5 +86,14 @@
   "galleryButtonDestructive": "Delete",
   "galleryButtonDisabled": "Disabled",
   "galleryButtonLoading": "Loading",
-  "galleryTabularFigures": "Tabular figures"
+  "galleryTabularFigures": "Tabular figures",
+  "navHome": "Home",
+  "placeholderNotBuilt": "This section has not been built yet.",
+  "offlineMessage": "No connection. You can still view saved kundalis.",
+  "evaluationOrderTitle": "Evaluation {orderId}",
+  "routeNotFoundTitle": "Page not found",
+  "routeNotFoundMessage": "The link {location} does not go anywhere.",
+  "routeNotFoundAction": "Go to start",
+  "profileDeveloperSection": "Development",
+  "profileDesignGallerySubtitle": "Browse components and colours"
 }
