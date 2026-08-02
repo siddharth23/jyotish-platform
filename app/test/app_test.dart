@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jyotish_app/core/design/gallery/design_gallery.dart';
 import 'package:jyotish_app/main.dart';
 
 void main() {
@@ -10,6 +11,7 @@ void main() {
 
     testWidgets('builds without throwing', (tester) async {
       await tester.pumpWidget(subject());
+      await tester.pump(const Duration(milliseconds: 100));
       expect(tester.takeException(), isNull);
     });
 
@@ -18,9 +20,13 @@ void main() {
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('renders its home screen', (tester) async {
+    // Until a product feature exists, the design gallery is the home screen.
+    // This will need replacing with the first real screen.
+    testWidgets('shows the design gallery as its home', (tester) async {
       await tester.pumpWidget(subject());
-      expect(find.text('Jyotish'), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.byType(DesignGallery), findsOneWidget);
+      expect(find.text('Design System'), findsOneWidget);
     });
   });
 }
