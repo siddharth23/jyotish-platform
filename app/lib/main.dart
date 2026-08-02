@@ -12,8 +12,13 @@ void main() {
 /// The home screen is currently the design system gallery (US-004). No product
 /// feature exists yet — the birth-data capture flow, chart rendering and the paid
 /// evaluation are all still empty folders under `lib/features/`, and the
-/// calculation engine has no native build. Replace this home once the first real
-/// screen lands.
+/// calculation engine has no native build.
+///
+/// The gallery builds its own [MaterialApp] so it can own the theme and locale
+/// switches it demonstrates. When the first real screen lands, that
+/// [MaterialApp] moves here and must keep the same `localizationsDelegates`,
+/// `supportedLocales` and `locale` wiring — design system components resolve
+/// their accessibility strings from context and will throw without it.
 class JyotishApp extends StatelessWidget {
   const JyotishApp({super.key});
 

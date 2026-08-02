@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_radii.dart';
 import '../tokens/app_spacing.dart';
@@ -139,7 +141,7 @@ class AppButton extends StatelessWidget {
       enabled: _enabled,
       label: semanticLabel ?? label,
       // The visual spinner is not announced; this is.
-      hint: isLoading ? 'Wird geladen' : null,
+      hint: isLoading ? AppL10n.of(context).commonLoading : null,
       excludeSemantics: true,
       child: Opacity(
         opacity: opacity,

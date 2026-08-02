@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_radii.dart';
 
@@ -14,7 +16,7 @@ class AppProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        label: label ?? 'Wird geladen',
+        label: label ?? AppL10n.of(context).commonLoading,
         liveRegion: true,
         child: SizedBox(
           width: size,

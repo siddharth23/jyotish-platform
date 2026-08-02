@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_l10n.dart';
+
 import '../theme/app_theme_extension.dart';
 import '../tokens/app_radii.dart';
 import '../tokens/app_spacing.dart';
@@ -13,13 +15,15 @@ class AppBottomSheet extends StatelessWidget {
   const AppBottomSheet({
     required this.title,
     required this.child,
-    this.closeTooltip = 'Schliessen',
+    this.closeTooltip,
     super.key,
   });
 
   final String title;
   final Widget child;
-  final String closeTooltip;
+
+  /// Overrides the localised default.
+  final String? closeTooltip;
 
   /// Presents the sheet and resolves with whatever it is popped with.
   static Future<T?> show<T>({
@@ -39,6 +43,7 @@ class AppBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final close = closeTooltip ?? AppL10n.of(context).commonClose;
 
     return Padding(
       // Lifts the sheet above the keyboard when it contains a field.
@@ -74,7 +79,7 @@ class AppBottomSheet extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop(),
                   child: Semantics(
                     button: true,
-                    label: closeTooltip,
+                    label: close,
                     child: const SizedBox(
                       width: AppSpacing.minTapTarget,
                       height: AppSpacing.minTapTarget,

@@ -47,12 +47,19 @@ class AppKeyValueRow extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.md),
-            Text(
-              value,
-              textAlign: TextAlign.end,
-              style:
-                  (isNumeric ? AppTypography.numeric : AppTypography.bodyMedium)
-                      .copyWith(color: colors.onSurface),
+            // Flexible, not a bare Text: a long value — a translated status, a
+            // German sign name — otherwise overflows the row rather than
+            // wrapping. Loose fit so short values such as '5°12′ Löwe' still
+            // shrink to their content instead of claiming half the row.
+            Flexible(
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
+                style: (isNumeric
+                        ? AppTypography.numeric
+                        : AppTypography.bodyMedium)
+                    .copyWith(color: colors.onSurface),
+              ),
             ),
             if (trailing != null) ...[
               const SizedBox(width: AppSpacing.sm),
