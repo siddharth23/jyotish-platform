@@ -32,6 +32,20 @@ jobs:
       - name: Scan for committed secrets
         run: ./scripts/check_secrets.sh
 
+  observability:
+    name: Observability definitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml
+      - name: Alert thresholds match US-007 AC3
+        run: ./scripts/check_alert_thresholds.py
+      - name: Dashboard is valid JSON
+        run: python3 -c "import json; json.load(open('infra/observability/dashboard.json'))"
+
   flutter-analyse:
     name: Flutter app — analyse & test
     runs-on: ubuntu-latest
