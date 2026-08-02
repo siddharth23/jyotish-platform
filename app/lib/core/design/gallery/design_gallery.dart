@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_formats.dart';
 import '../../l10n/generated/app_l10n.dart';
 import '../../l10n/language_selector.dart';
-import '../../l10n/locale_controller.dart';
+import '../theme/theme_controller.dart';
 import '../design_system.dart';
 
 /// A live catalogue of every component, in both themes.
@@ -22,7 +22,6 @@ class DesignGallery extends ConsumerStatefulWidget {
 }
 
 class _DesignGalleryState extends ConsumerState<DesignGallery> {
-  bool _dark = false;
   int _tab = 0;
   bool _switchOn = true;
   bool _checked = false;
@@ -31,27 +30,7 @@ class _DesignGalleryState extends ConsumerState<DesignGallery> {
   final Set<String> _selectedVargas = {'D9'};
 
   @override
-  Widget build(BuildContext context) {
-    // A null locale means "follow the device", which is what MaterialApp does
-    // when the property is omitted.
-    final preference = ref.watch(localeControllerProvider);
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: _dark ? ThemeMode.dark : ThemeMode.light,
-      locale: preference.locale,
-      supportedLocales: supportedLocales,
-      localizationsDelegates: const [
-        AppL10n.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: Builder(builder: _buildGallery),
-    );
-  }
+  Widget build(BuildContext context) => _buildGallery(context);
 
   Widget _buildGallery(BuildContext context) {
     final colors = context.colors;
@@ -59,13 +38,22 @@ class _DesignGalleryState extends ConsumerState<DesignGallery> {
 
     return AppScaffold(
       title: l10n.galleryTitle,
+      onBack: context.canPop() ? context.pop : null,
+      backTooltip: l10n.commonClose,
       actions: [
         const LanguageToggleButton(),
-        AppIconButton(
-          icon: _dark ? Icons.light_mode : Icons.dark_mode,
-          onPressed: () => setState(() => _dark = !_dark),
-          tooltip: _dark ? l10n.galleryThemeLight : l10n.galleryThemeDark,
-        ),
+        Builder(builder: (context) {
+          // Resolved from the rendered theme, not the stored mode, so the
+          // toggle is correct when the mode is 'system'.
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return AppIconButton(
+            icon: isDark ? Icons.light_mode : Icons.dark_mode,
+            onPressed: () => ref
+                .read(themeControllerProvider.notifier)
+                .toggle(isCurrentlyDark: isDark),
+            tooltip: isDark ? l10n.galleryThemeLight : l10n.galleryThemeDark,
+          );
+        }),
       ],
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),

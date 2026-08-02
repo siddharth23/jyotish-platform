@@ -292,4 +292,36 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get galleryTabularFigures => 'Tabular figures';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get placeholderNotBuilt => 'This section has not been built yet.';
+
+  @override
+  String get offlineMessage =>
+      'No connection. You can still view saved kundalis.';
+
+  @override
+  String evaluationOrderTitle(String orderId) {
+    return 'Evaluation $orderId';
+  }
+
+  @override
+  String get routeNotFoundTitle => 'Page not found';
+
+  @override
+  String routeNotFoundMessage(String location) {
+    return 'The link $location does not go anywhere.';
+  }
+
+  @override
+  String get routeNotFoundAction => 'Go to start';
+
+  @override
+  String get profileDeveloperSection => 'Development';
+
+  @override
+  String get profileDesignGallerySubtitle => 'Browse components and colours';
 }

@@ -24,6 +24,30 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Custom scheme: jyotish://auswertung/<orderId>
+                 Works today without owning a domain, which is why the delivery
+                 email can already carry a working link. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="jyotish"/>
+            </intent-filter>
+
+            <!-- App Links: https://jyotish.de/...
+                 android:autoVerify requires /.well-known/assetlinks.json to be
+                 served from that domain with this app's signing fingerprint.
+                 The domain is not registered and the release key does not
+                 exist, so this filter currently opens the browser rather than
+                 the app. It is declared now so the requirement is visible
+                 rather than discovered at launch. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="jyotish.de"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

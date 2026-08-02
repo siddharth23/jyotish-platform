@@ -20,6 +20,7 @@ dependencies:
   dio: ^5.4.0
   timezone: ^0.9.4
   shared_preferences: ^2.5.5
+  connectivity_plus: ^7.3.1
 
   # AGPL engine — runs ON DEVICE only. See docs/AGPL-BOUNDARY.md.
   # jyotish_engine:

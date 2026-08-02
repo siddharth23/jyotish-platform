@@ -612,6 +612,60 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Tabellenziffern'**
   String get galleryTabularFigures;
+
+  /// First bottom-bar tab.
+  ///
+  /// In de, this message translates to:
+  /// **'Start'**
+  String get navHome;
+
+  /// Shown on tabs whose feature does not exist yet. Remove with the last placeholder screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieser Bereich ist noch nicht gebaut.'**
+  String get placeholderNotBuilt;
+
+  /// States what still works, not only that something is broken.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Verbindung. Gespeicherte Kundalis kannst du weiterhin ansehen.'**
+  String get offlineMessage;
+
+  /// Title of a single evaluation opened by deep link.
+  ///
+  /// In de, this message translates to:
+  /// **'Auswertung {orderId}'**
+  String evaluationOrderTitle(String orderId);
+
+  /// No description provided for @routeNotFoundTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Seite nicht gefunden'**
+  String get routeNotFoundTitle;
+
+  /// Shown for a deep link matching no route.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Link {location} führt nirgendwohin.'**
+  String routeNotFoundMessage(String location);
+
+  /// No description provided for @routeNotFoundAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Zur Startseite'**
+  String get routeNotFoundAction;
+
+  /// No description provided for @profileDeveloperSection.
+  ///
+  /// In de, this message translates to:
+  /// **'Entwicklung'**
+  String get profileDeveloperSection;
+
+  /// No description provided for @profileDesignGallerySubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Komponenten und Farben ansehen'**
+  String get profileDesignGallerySubtitle;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
