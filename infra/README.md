@@ -29,6 +29,32 @@ environments/single              The current single-environment setup
 modules/app-server                Hetzner server + firewall + SSH key, reusable per environment
 ```
 
+## Access
+
+CI supplies the Terraform inputs from repository settings:
+
+| Setting | Kind | Purpose |
+|---|---|---|
+| `HCLOUD_TOKEN` | secret | Hetzner Cloud API, project-scoped, read and write |
+| `HETZNER_OBJECT_STORAGE_ACCESS_KEY` | secret | Remote state bucket |
+| `HETZNER_OBJECT_STORAGE_SECRET_KEY` | secret | Remote state bucket |
+| `INFRA_SSH_PUBLIC_KEY` | variable | Installed on the server for the `deploy` user |
+| `INFRA_ALLOWED_SSH_CIDRS` | variable | Port 22 allowlist, an HCL list such as `["203.0.113.4/32"]` |
+
+The keypair currently in `INFRA_SSH_PUBLIC_KEY` was generated as
+`~/.ssh/jyotish_infra` on the maintainer's machine. **Its private half exists in exactly
+one place and is not backed up** — losing it means losing SSH access to a provisioned
+server, recoverable only through the Hetzner console. Once the host is up:
+
+```bash
+ssh -i ~/.ssh/jyotish_infra deploy@<server-ip>
+```
+
+`INFRA_ALLOWED_SSH_CIDRS` is a home IP address and will go stale whenever that address
+changes; the symptom is SSH timing out while everything else works. Update the variable
+and re-apply. The module rejects `0.0.0.0/0`, so widening it to "anywhere" is not an
+option — add the new address instead.
+
 ## Note
 
 No ephemeris or chart-computation compute is provisioned anywhere, by design. Charts are
