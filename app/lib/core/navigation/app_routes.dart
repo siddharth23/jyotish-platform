@@ -14,6 +14,11 @@ abstract final class AppRoutes {
   /// A single evaluation, as linked from its delivery email.
   static const String evaluationDetail = '/auswertung/:orderId';
 
+  /// Sign-in. Reachable by URL so it can be opened on a device during review,
+  /// and the destination US-013's checkout gate pushes to. Nothing links to it
+  /// yet: there is no flow that requires an account until then.
+  static const String signIn = '/anmelden';
+
   /// First-run onboarding. Not deep-linkable from outside the app; it is
   /// reached by redirect, and left by completing it.
   static const String onboarding = '/onboarding';

@@ -5,6 +5,7 @@ import '../../features/career/presentation/career_screen.dart';
 import '../../features/chart/presentation/chart_screen.dart';
 import '../../features/evaluation/presentation/evaluation_detail_screen.dart';
 import '../../features/evaluation/presentation/evaluation_screen.dart';
+import '../../features/auth/presentation/sign_in_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/onboarding_controller.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
@@ -126,7 +127,20 @@ GoRouter createRouter({
           },
         ),
       ),
-      // Outside the shell: full screen, with its own back affordance.
+      // Outside the shell: sign-in is a full-screen decision, not a tab.
+      GoRoute(
+        path: AppRoutes.signIn,
+        builder: (context, state) => SignInScreen(
+          // Theme.of, not defaultTargetPlatform: it honours the override a
+          // widget test sets, so the iOS rules can be driven from any machine.
+          platform: signInPlatformFor(Theme.of(context).platform),
+          onSignedIn: (_) => GoRouter.of(context).go(AppRoutes.home),
+          // Null until the email and password screen exists. US-011 delivered
+          // that flow's domain in the API and no UI, so there is nowhere to go
+          // yet and the control is drawn disabled rather than dead.
+          onContinueWithEmail: null,
+        ),
+      ),
       GoRoute(
         path: AppRoutes.designGallery,
         builder: (context, state) => const DesignGallery(),

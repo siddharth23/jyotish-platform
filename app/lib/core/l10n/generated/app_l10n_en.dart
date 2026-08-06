@@ -375,4 +375,79 @@ class AppL10nEn extends AppL10n {
   @override
   String get onboardingExpertBody =>
       'A personal reading written by a real astrologer, delivered as a PDF within 72 hours. Optional, whenever you want it.';
+
+  @override
+  String get signInTitle => 'Sign in';
+
+  @override
+  String get signInBody => 'Sign in to keep your kundalis and evaluations.';
+
+  @override
+  String get signInWithApple => 'Sign in with Apple';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get signInWithEmail => 'Continue with email';
+
+  @override
+  String get signInDivider => 'or';
+
+  @override
+  String get signInSocialUnavailable =>
+      'Signing in with Apple or Google is not available on this device right now.';
+
+  @override
+  String get signInPrivateRelayTitle => 'Your address stays hidden';
+
+  @override
+  String get signInPrivateRelayBody =>
+      'Apple forwards email to you without showing us your address. Your evaluation arrives by email — if you turn forwarding off later, it will not reach you.';
+
+  @override
+  String get signInLinkTitle => 'Link this account?';
+
+  @override
+  String signInLinkBody(String email, String provider) {
+    return 'An account already exists for $email. Link it with $provider? Your kundalis and orders are kept.';
+  }
+
+  @override
+  String get signInLinkConfirm => 'Link';
+
+  @override
+  String get signInProofRequiredTitle => 'Please sign in first';
+
+  @override
+  String signInProofRequiredBody(String email, String provider) {
+    return 'An account already exists for $email. Sign in the usual way first, then we can add $provider safely.';
+  }
+
+  @override
+  String get signInErrorNetwork => 'No connection. Please try again.';
+
+  @override
+  String get signInErrorProviderUnavailable =>
+      'This sign-in method is not available on this device.';
+
+  @override
+  String get signInErrorTokenRejected =>
+      'We could not confirm the sign-in. Please try again.';
+
+  @override
+  String get signInErrorNotImplemented =>
+      'This sign-in method is not available yet.';
+
+  @override
+  String get signInErrorUnknown => 'Sign-in did not work. Please try again.';
+
+  @override
+  String get providerNameApple => 'Apple';
+
+  @override
+  String get providerNameGoogle => 'Google';
+
+  @override
+  String get providerNamePassword => 'Email and password';
 }
