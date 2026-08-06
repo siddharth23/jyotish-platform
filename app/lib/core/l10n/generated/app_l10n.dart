@@ -750,6 +750,138 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit.'**
   String get onboardingExpertBody;
+
+  /// Title of the sign-in screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get signInTitle;
+
+  /// No description provided for @signInBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Melde dich an, um deine Kundalis und Auswertungen zu sichern.'**
+  String get signInBody;
+
+  /// Apple prescribes this exact wording for German. Do not reword it — the button text is part of Sign in with Apple's branding requirements.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Apple anmelden'**
+  String get signInWithApple;
+
+  /// Wording set by Google's branding guidelines. Do not reword.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Google anmelden'**
+  String get signInWithGoogle;
+
+  /// No description provided for @signInWithEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit E-Mail-Adresse fortfahren'**
+  String get signInWithEmail;
+
+  /// No description provided for @signInDivider.
+  ///
+  /// In de, this message translates to:
+  /// **'oder'**
+  String get signInDivider;
+
+  /// Shown when no social provider can run. The email flow below it still works.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung über Apple oder Google ist auf diesem Gerät gerade nicht möglich.'**
+  String get signInSocialUnavailable;
+
+  /// No description provided for @signInPrivateRelayTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Adresse bleibt verborgen'**
+  String get signInPrivateRelayTitle;
+
+  /// Shown once, right after an account is created through Hide My Email. The delivery consequence is the point; do not shorten it away.
+  ///
+  /// In de, this message translates to:
+  /// **'Apple leitet E-Mails an dich weiter, ohne uns deine Adresse zu zeigen. Deine Auswertung kommt per E-Mail — wenn du die Weiterleitung später abschaltest, erreicht sie dich nicht mehr.'**
+  String get signInPrivateRelayBody;
+
+  /// No description provided for @signInLinkTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto verknüpfen?'**
+  String get signInLinkTitle;
+
+  /// The address is masked by the API before it reaches the app.
+  ///
+  /// In de, this message translates to:
+  /// **'Für {email} gibt es bereits ein Konto. Möchtest du es mit {provider} verknüpfen? Deine Kundalis und Bestellungen bleiben erhalten.'**
+  String signInLinkBody(String email, String provider);
+
+  /// No description provided for @signInLinkConfirm.
+  ///
+  /// In de, this message translates to:
+  /// **'Verknüpfen'**
+  String get signInLinkConfirm;
+
+  /// No description provided for @signInProofRequiredTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte zuerst anmelden'**
+  String get signInProofRequiredTitle;
+
+  /// Shown when the provider has not verified the address, so the accounts must not be joined on the address alone.
+  ///
+  /// In de, this message translates to:
+  /// **'Für {email} gibt es bereits ein Konto. Melde dich zuerst wie gewohnt an — dann können wir {provider} sicher hinzufügen.'**
+  String signInProofRequiredBody(String email, String provider);
+
+  /// No description provided for @signInErrorNetwork.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Verbindung. Bitte versuche es erneut.'**
+  String get signInErrorNetwork;
+
+  /// No description provided for @signInErrorProviderUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Anmeldung ist auf diesem Gerät nicht verfügbar.'**
+  String get signInErrorProviderUnavailable;
+
+  /// No description provided for @signInErrorTokenRejected.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Anmeldung konnte nicht bestätigt werden. Bitte versuche es erneut.'**
+  String get signInErrorTokenRejected;
+
+  /// No description provided for @signInErrorNotImplemented.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Anmeldung ist noch nicht verfügbar.'**
+  String get signInErrorNotImplemented;
+
+  /// No description provided for @signInErrorUnknown.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Anmeldung hat nicht geklappt. Bitte versuche es erneut.'**
+  String get signInErrorUnknown;
+
+  /// Brand name. Never translated.
+  ///
+  /// In de, this message translates to:
+  /// **'Apple'**
+  String get providerNameApple;
+
+  /// No description provided for @providerNameGoogle.
+  ///
+  /// In de, this message translates to:
+  /// **'Google'**
+  String get providerNameGoogle;
+
+  /// No description provided for @providerNamePassword.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail und Passwort'**
+  String get providerNamePassword;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

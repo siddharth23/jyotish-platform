@@ -377,4 +377,82 @@ class AppL10nDe extends AppL10n {
   @override
   String get onboardingExpertBody =>
       'Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit.';
+
+  @override
+  String get signInTitle => 'Anmelden';
+
+  @override
+  String get signInBody =>
+      'Melde dich an, um deine Kundalis und Auswertungen zu sichern.';
+
+  @override
+  String get signInWithApple => 'Mit Apple anmelden';
+
+  @override
+  String get signInWithGoogle => 'Mit Google anmelden';
+
+  @override
+  String get signInWithEmail => 'Mit E-Mail-Adresse fortfahren';
+
+  @override
+  String get signInDivider => 'oder';
+
+  @override
+  String get signInSocialUnavailable =>
+      'Anmeldung über Apple oder Google ist auf diesem Gerät gerade nicht möglich.';
+
+  @override
+  String get signInPrivateRelayTitle => 'Deine Adresse bleibt verborgen';
+
+  @override
+  String get signInPrivateRelayBody =>
+      'Apple leitet E-Mails an dich weiter, ohne uns deine Adresse zu zeigen. Deine Auswertung kommt per E-Mail — wenn du die Weiterleitung später abschaltest, erreicht sie dich nicht mehr.';
+
+  @override
+  String get signInLinkTitle => 'Konto verknüpfen?';
+
+  @override
+  String signInLinkBody(String email, String provider) {
+    return 'Für $email gibt es bereits ein Konto. Möchtest du es mit $provider verknüpfen? Deine Kundalis und Bestellungen bleiben erhalten.';
+  }
+
+  @override
+  String get signInLinkConfirm => 'Verknüpfen';
+
+  @override
+  String get signInProofRequiredTitle => 'Bitte zuerst anmelden';
+
+  @override
+  String signInProofRequiredBody(String email, String provider) {
+    return 'Für $email gibt es bereits ein Konto. Melde dich zuerst wie gewohnt an — dann können wir $provider sicher hinzufügen.';
+  }
+
+  @override
+  String get signInErrorNetwork =>
+      'Keine Verbindung. Bitte versuche es erneut.';
+
+  @override
+  String get signInErrorProviderUnavailable =>
+      'Diese Anmeldung ist auf diesem Gerät nicht verfügbar.';
+
+  @override
+  String get signInErrorTokenRejected =>
+      'Die Anmeldung konnte nicht bestätigt werden. Bitte versuche es erneut.';
+
+  @override
+  String get signInErrorNotImplemented =>
+      'Diese Anmeldung ist noch nicht verfügbar.';
+
+  @override
+  String get signInErrorUnknown =>
+      'Die Anmeldung hat nicht geklappt. Bitte versuche es erneut.';
+
+  @override
+  String get providerNameApple => 'Apple';
+
+  @override
+  String get providerNameGoogle => 'Google';
+
+  @override
+  String get providerNamePassword => 'E-Mail und Passwort';
 }

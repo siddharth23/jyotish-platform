@@ -226,5 +226,67 @@
       }
     }
   },
-  "onboardingExpertBody": "Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit."
+  "onboardingExpertBody": "Eine persönliche Auswertung, geschrieben von einer echten Astrologin, als PDF innerhalb von 72 Stunden. Optional und jederzeit.",
+  "signInTitle": "Anmelden",
+  "@signInTitle": {
+    "description": "Title of the sign-in screen."
+  },
+  "signInBody": "Melde dich an, um deine Kundalis und Auswertungen zu sichern.",
+  "signInWithApple": "Mit Apple anmelden",
+  "@signInWithApple": {
+    "description": "Apple prescribes this exact wording for German. Do not reword it — the button text is part of Sign in with Apple's branding requirements."
+  },
+  "signInWithGoogle": "Mit Google anmelden",
+  "@signInWithGoogle": {
+    "description": "Wording set by Google's branding guidelines. Do not reword."
+  },
+  "signInWithEmail": "Mit E-Mail-Adresse fortfahren",
+  "signInDivider": "oder",
+  "signInSocialUnavailable": "Anmeldung über Apple oder Google ist auf diesem Gerät gerade nicht möglich.",
+  "@signInSocialUnavailable": {
+    "description": "Shown when no social provider can run. The email flow below it still works."
+  },
+  "signInPrivateRelayTitle": "Deine Adresse bleibt verborgen",
+  "signInPrivateRelayBody": "Apple leitet E-Mails an dich weiter, ohne uns deine Adresse zu zeigen. Deine Auswertung kommt per E-Mail — wenn du die Weiterleitung später abschaltest, erreicht sie dich nicht mehr.",
+  "@signInPrivateRelayBody": {
+    "description": "Shown once, right after an account is created through Hide My Email. The delivery consequence is the point; do not shorten it away."
+  },
+  "signInLinkTitle": "Konto verknüpfen?",
+  "signInLinkBody": "Für {email} gibt es bereits ein Konto. Möchtest du es mit {provider} verknüpfen? Deine Kundalis und Bestellungen bleiben erhalten.",
+  "@signInLinkBody": {
+    "description": "The address is masked by the API before it reaches the app.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      },
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "signInLinkConfirm": "Verknüpfen",
+  "signInProofRequiredTitle": "Bitte zuerst anmelden",
+  "signInProofRequiredBody": "Für {email} gibt es bereits ein Konto. Melde dich zuerst wie gewohnt an — dann können wir {provider} sicher hinzufügen.",
+  "@signInProofRequiredBody": {
+    "description": "Shown when the provider has not verified the address, so the accounts must not be joined on the address alone.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      },
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "signInErrorNetwork": "Keine Verbindung. Bitte versuche es erneut.",
+  "signInErrorProviderUnavailable": "Diese Anmeldung ist auf diesem Gerät nicht verfügbar.",
+  "signInErrorTokenRejected": "Die Anmeldung konnte nicht bestätigt werden. Bitte versuche es erneut.",
+  "signInErrorNotImplemented": "Diese Anmeldung ist noch nicht verfügbar.",
+  "signInErrorUnknown": "Die Anmeldung hat nicht geklappt. Bitte versuche es erneut.",
+  "providerNameApple": "Apple",
+  "@providerNameApple": {
+    "description": "Brand name. Never translated."
+  },
+  "providerNameGoogle": "Google",
+  "providerNamePassword": "E-Mail und Passwort"
 }
