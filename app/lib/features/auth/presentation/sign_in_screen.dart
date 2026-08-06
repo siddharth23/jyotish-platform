@@ -89,8 +89,9 @@ class SignInScreen extends ConsumerWidget {
                 AppBanner(
                   message: _failureMessage(l10n, state.reason),
                   tone: AppBannerTone.danger,
-                  onDismiss: () =>
-                      ref.read(authControllerProvider.notifier).dismissFailure(),
+                  onDismiss: () => ref
+                      .read(authControllerProvider.notifier)
+                      .dismissFailure(),
                   // Required by AppBanner: a dismiss control a screen reader
                   // cannot announce is a control it cannot reach.
                   dismissTooltip: l10n.commonClose,
@@ -204,8 +205,7 @@ class _SocialButtons extends StatelessWidget {
             isLoading: busy && current.provider == provider,
             onPressed: busy ? null : () => onPressed(provider),
           ),
-          if (provider != providers.last)
-            const SizedBox(height: AppSpacing.md),
+          if (provider != providers.last) const SizedBox(height: AppSpacing.md),
         ],
       ],
     );

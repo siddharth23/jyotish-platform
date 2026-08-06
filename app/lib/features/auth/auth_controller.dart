@@ -249,8 +249,7 @@ final appleAuthorisationStoreProvider = Provider<AppleAuthorisationStore>(
   (ref) => SharedPreferencesAppleAuthorisationStore(),
 );
 
-final authControllerProvider =
-    StateNotifierProvider<AuthController, AuthState>(
+final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
   (ref) => AuthController(
     signIn: ref.watch(socialSignInProvider),
     gateway: ref.watch(authGatewayProvider),

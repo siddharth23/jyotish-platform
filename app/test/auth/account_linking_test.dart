@@ -121,7 +121,8 @@ void main() {
     });
 
     test('a real address could match', () {
-      expect(AccountLinkPolicy.couldMatchAnExistingAccount(credential()), isTrue);
+      expect(
+          AccountLinkPolicy.couldMatchAnExistingAccount(credential()), isTrue);
     });
   });
 

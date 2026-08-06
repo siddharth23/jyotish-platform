@@ -341,7 +341,8 @@ void main() {
         TargetPlatform.linux,
         TargetPlatform.fuchsia,
       ]) {
-        expect(signInPlatformFor(other), SignInPlatform.other, reason: '$other');
+        expect(signInPlatformFor(other), SignInPlatform.other,
+            reason: '$other');
       }
     });
   });

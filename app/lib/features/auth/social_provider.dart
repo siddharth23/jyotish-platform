@@ -56,7 +56,10 @@ abstract final class SocialSignInAvailability {
   /// Apple ID.
   static Set<SocialProvider> supportedOn(SignInPlatform platform) =>
       switch (platform) {
-        SignInPlatform.ios => const {SocialProvider.apple, SocialProvider.google},
+        SignInPlatform.ios => const {
+            SocialProvider.apple,
+            SocialProvider.google
+          },
         SignInPlatform.android => const {SocialProvider.google},
         SignInPlatform.other => const {},
       };

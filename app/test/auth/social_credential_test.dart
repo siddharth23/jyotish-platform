@@ -19,7 +19,8 @@ SocialCredential apple({
       providerAssertsEmailVerified: verified,
     );
 
-SocialCredential google({String? email = 'anna@example.de', bool verified = true}) =>
+SocialCredential google(
+        {String? email = 'anna@example.de', bool verified = true}) =>
     SocialCredential(
       provider: SocialProvider.google,
       subjectId: 'google-sub-1',
@@ -71,7 +72,8 @@ void main() {
   });
 
   group('US-012 AC4 — Apple discloses the address only once', () {
-    test('a first authorisation is stored before anything else can fail', () async {
+    test('a first authorisation is stored before anything else can fail',
+        () async {
       final store = InMemoryAppleAuthorisationStore();
       final first = apple(email: 'anna@example.de', displayName: 'Anna B.');
 
@@ -132,12 +134,13 @@ void main() {
         apple(subjectId: 'subject-a', email: 'a@example.de'),
         store,
       );
-      final other =
-          await withRememberedAppleDetails(apple(subjectId: 'subject-b'), store);
+      final other = await withRememberedAppleDetails(
+          apple(subjectId: 'subject-b'), store);
       expect(other.email, isNull);
     });
 
-    test('Google is left alone — it discloses the address every time', () async {
+    test('Google is left alone — it discloses the address every time',
+        () async {
       final store = InMemoryAppleAuthorisationStore();
       final result = await withRememberedAppleDetails(google(), store);
 

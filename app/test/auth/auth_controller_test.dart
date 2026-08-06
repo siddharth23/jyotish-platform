@@ -55,8 +55,12 @@ const signedIn = SocialExchangeSignedIn(
   emailVerified: true,
 );
 
-({AuthController controller, FakeSocialSignIn signIn, ScriptedGateway gateway,
-  InMemoryAppleAuthorisationStore store}) harness({
+({
+  AuthController controller,
+  FakeSocialSignIn signIn,
+  ScriptedGateway gateway,
+  InMemoryAppleAuthorisationStore store
+}) harness({
   SocialAuthorisation? appleResponse,
   SocialExchangeResult Function(SocialCredential)? exchange,
   SocialExchangeResult Function(SocialCredential)? link,

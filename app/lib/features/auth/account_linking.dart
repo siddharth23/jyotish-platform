@@ -37,8 +37,7 @@ enum ExistingSignInMethod {
   apple,
   google;
 
-  static ExistingSignInMethod? fromWireName(String value) =>
-      switch (value) {
+  static ExistingSignInMethod? fromWireName(String value) => switch (value) {
         'password' => ExistingSignInMethod.password,
         'apple' => ExistingSignInMethod.apple,
         'google' => ExistingSignInMethod.google,
