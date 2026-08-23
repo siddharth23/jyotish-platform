@@ -1,6 +1,6 @@
-# Auth feature — Sign in with Apple and Google
+# Auth feature — sign-in and sessions
 
-US-012. The mobile half of social sign-in.
+US-012 (social sign-in) and US-016 (sessions and token refresh). The mobile half of both.
 
 | File | Purpose |
 |---|---|
@@ -12,8 +12,24 @@ US-012. The mobile half of social sign-in.
 | `auth_gateway.dart` | Port to the API's identity module. Unimplemented; the API has no HTTP layer. |
 | `auth_controller.dart` | Riverpod state machine. Double-tap guard, cancel handling, relay flag. |
 | `presentation/sign_in_screen.dart` | The screen and the linking prompt. |
+| `session_tokens.dart` | The token pair, its expiry skew, and a `toString` that never prints a token. |
+| `secure_token_store.dart` | Keychain / Android Keystore. **Not** `shared_preferences` (US-016 AC2). |
+| `session_controller.dart` | Holds the session, renews it single-flight, ends it on rejection. |
 
-## Three rules that are easy to break by accident
+## Five rules that are easy to break by accident
+
+**Never refresh twice at once.** The server rotates the refresh token on every use and treats a
+second presentation of an already-rotated token as proof it was copied — it revokes every session
+for the account. So the ordinary client shortcut of firing a refresh per in-flight request does not
+merely waste a call: three screens opening together means three refreshes with the same token, two
+of which look exactly like theft, and the user is signed out everywhere. `SessionController`
+collapses concurrent callers onto one in-flight refresh. That latch is a correctness requirement,
+not an optimisation.
+
+**Never put a token in `shared_preferences`.** Everything else the app persists goes there; a
+refresh token is the account for sixty days and belongs in the Keychain or the Keystore.
+`apple_authorisation_store.dart` is the deliberate exception and explains itself — it holds an
+address, which authenticates nobody.
 
 **Never build a provider list by hand.** `SocialSignInAvailability.providersFor` puts Apple first
 on iOS and returns *nothing at all* when Apple is unavailable there. Guideline 4.8 makes Google

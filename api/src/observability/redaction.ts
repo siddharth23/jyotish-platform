@@ -36,6 +36,9 @@ export const ALLOWED_FIELDS: ReadonlySet<string> = new Set([
   'requestId',
   'spanId',
   'sessionId',
+  // The refresh-token family a session belongs to (US-016). Opaque, and the
+  // one field that makes a detected token theft traceable across rotations.
+  'familyId',
   // Record identifiers — pseudonymous, resolvable only via the database
   'orderId',
   'userId',
@@ -54,6 +57,7 @@ export const ALLOWED_FIELDS: ReadonlySet<string> = new Set([
   // Domain state, no personal content
   'orderState',
   'previousState',
+  'revocationReason',
   'flagKey',
   'flagValue',
   'ruleSetVersion',
