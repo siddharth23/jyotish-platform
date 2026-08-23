@@ -93,15 +93,24 @@ export interface IdentityMailer {
   sendAccountAlreadyExistsNotice(to: MailRecipient): Promise<void>;
 }
 
-/** Implemented by US-016. */
+/**
+ * Why every session for an account is being torn down.
+ *
+ * Carried rather than assumed because the two cases read very differently in
+ * an audit trail: one is a user tidying up, the other is the aftermath of a
+ * password reset that may well have been an account takeover.
+ */
+export type SessionRevocationReason = 'PASSWORD_CHANGED' | 'SIGNED_OUT_EVERYWHERE';
+
+/** Implemented by `session.ts` (US-016). */
 export interface SessionRevoker {
-  revokeAllForAccount(accountId: string): Promise<void>;
+  revokeAllForAccount(accountId: string, reason: SessionRevocationReason): Promise<void>;
 }
 
-/** A no-op revoker for the period before US-016 lands. */
+/** A no-op revoker, for callers that issue no sessions. */
 export class NoSessionRevoker implements SessionRevoker {
   async revokeAllForAccount(): Promise<void> {
-    // Nothing to revoke: no sessions are issued yet.
+    // Nothing to revoke.
   }
 }
 
@@ -481,7 +490,7 @@ export class IdentityService {
     await this.dependencies.tokens.invalidateAllForAccount(account.id, 'password_reset', at);
     // US-016 AC4. A takeover that ends with the attacker still holding a live
     // session is not over.
-    await this.sessions.revokeAllForAccount(account.id);
+    await this.sessions.revokeAllForAccount(account.id, 'PASSWORD_CHANGED');
     // The lockout the attacker (or the user's own forgetfulness) caused is
     // lifted: mailbox control outranks the failed attempts that produced it.
     await this.dependencies.loginThrottle.clear(account.emailIndex);

@@ -1,6 +1,7 @@
 # Identity module
 
-Accounts, credentials and the flows that prove someone controls an email address. US-011.
+Accounts, credentials, sessions, and the flows that prove someone controls an email address.
+US-011 and US-016.
 
 ## What is here
 
@@ -14,12 +15,12 @@ Accounts, credentials and the flows that prove someone controls an email address
 | `login_throttle.ts` | Per-account lockout and per-client rate limiting (AC3). |
 | `account.ts` | The account record and its storage port. |
 | `identity_service.ts` | The flows that compose the above. |
+| `session.ts` | Access tokens, rotating refresh tokens and revocation (US-016). |
 
 ## What is deliberately elsewhere
 
-- **Sessions and tokens** — US-016. A successful login returns an `AuthenticatedPrincipal` and
-  stops. The `SessionRevoker` port is the seam; password reset already calls it, so US-016 AC4
-  ("sessions invalidated on password change") is a matter of supplying an implementation.
+- **Token storage on the device** — `app/lib/features/auth/`. The Keychain and the Android Keystore
+  are the client's problem; this module never sees where a token is kept.
 - **Social sign-in** — US-012. `Account.passwordHash` is nullable for exactly this reason.
 - **Email bodies** — the `notification` module. This module hands over a recipient, a locale and a
   secret. German is the source language and the strings are ICU resources, not literals in `.ts`.
@@ -52,14 +53,47 @@ definition. Two of them have consequences worth repeating:
   succeed.
 - The throttle store must move to Redis. In-process counters multiply the effective limit by the
   number of application instances.
+- `InMemorySessionRepository` must persist, or every deploy signs every user out. Its `rotate` must
+  become a conditional `UPDATE ... WHERE rotated_at IS NULL` in the same transaction as the insert —
+  see the note on reuse detection above.
 
 The account table needs a **unique** constraint on `email_index` and field-level encryption on the
 address itself.
+
+## Sessions (US-016)
+
+`session.ts` issues an HMAC-signed access token (15 minutes, stateless) alongside a rotating
+refresh token (60 days idle, 180 days absolute). Three things about it are load-bearing:
+
+**Refresh-token reuse is treated as theft.** Every refresh retires the token presented and mints a
+new one in the same family. Presenting an already-retired token proves the token was copied, so the
+whole family is revoked and the user must log in again. This is why `SessionRepository.rotate` must
+be atomic in the persistent implementation — a read-then-write lets a thief's refresh and the real
+device's refresh both succeed, which is exactly what reuse detection exists to catch.
+
+**Clients must refresh single-flight.** The direct consequence of the above: a client that fires one
+refresh per in-flight request presents the same token several times and signs the user out of every
+device. `app/lib/features/auth/session_controller.dart` collapses concurrent callers onto one
+refresh for this reason. Any other client — the astrologer console, the admin console — has to do
+the same.
+
+**Revocation lags by up to the access-token lifetime.** Access tokens are verified by signature
+alone, with no store read, so "sign out all devices" (AC3) and password-change invalidation (AC4)
+stop refreshes immediately but leave an already-issued access token working until it expires. That
+window *is* `ACCESS_TOKEN_TTL_MS`. Shortening it is the only lever; a store read per request is the
+alternative, and it puts the session table on the critical path of every call.
+
+`IdentityService` revokes through the `SessionRevoker` port, so a completed password reset tears
+down sessions without the identity module knowing how sessions are stored.
 
 ## Configuration
 
 `IDENTITY_EMAIL_INDEX_PEPPER` — at least 32 characters, from the secret store, never in the
 database it protects. Rotating it means recomputing every index from the decrypted addresses.
+
+`IDENTITY_ACCESS_TOKEN_KEY` — at least 32 bytes, from the secret store. Rotating it invalidates
+every outstanding access token, which is the break-glass control for a suspected key compromise:
+within fifteen minutes every client is forced through refresh, where the session store gets its say.
 
 ## Licensing
 
