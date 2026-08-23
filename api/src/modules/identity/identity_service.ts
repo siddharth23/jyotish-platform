@@ -102,6 +102,17 @@ export interface IdentityMailer {
  */
 export type SessionRevocationReason = 'PASSWORD_CHANGED' | 'SIGNED_OUT_EVERYWHERE';
 
+/**
+ * Whether an account is barred from authenticating.
+ *
+ * Implemented by `DeletionService` (US-015): an account inside its deletion
+ * grace period must not be reopenable by simply logging in again, or the
+ * deletion the user asked for means nothing.
+ */
+export interface AccountLockout {
+  isLockedOut(accountId: string): Promise<boolean>;
+}
+
 /** Implemented by `session.ts` (US-016). */
 export interface SessionRevoker {
   revokeAllForAccount(accountId: string, reason: SessionRevocationReason): Promise<void>;
@@ -131,6 +142,8 @@ export interface IdentityServiceDependencies {
   readonly mailThrottle: LoginThrottle;
   readonly mailer: IdentityMailer;
   readonly sessions?: SessionRevoker;
+  /** Optional: without it, a deletion request does not block login. */
+  readonly lockout?: AccountLockout;
   readonly logger?: Logger;
   readonly now?: () => Date;
   readonly newId?: () => string;
@@ -171,7 +184,18 @@ export interface AuthenticatedPrincipal {
   readonly emailVerified: boolean;
 }
 
-export type LoginRejection = 'INVALID_CREDENTIALS' | 'TEMPORARILY_LOCKED';
+export type LoginRejection =
+  | 'INVALID_CREDENTIALS'
+  | 'TEMPORARILY_LOCKED'
+  /**
+   * Correct password, but the account is scheduled for deletion (US-015).
+   *
+   * Deliberately reported only *after* the password checks out. Answering
+   * before that would make "is this address awaiting deletion" a question
+   * anyone could ask about anyone, which is the enumeration leak this module
+   * is built to avoid. The client routes this to the cancel-deletion screen.
+   */
+  | 'PENDING_DELETION';
 
 export type LoginResult =
   | { readonly outcome: 'authenticated'; readonly principal: AuthenticatedPrincipal }
@@ -392,7 +416,20 @@ export class IdentityService {
       return { outcome: 'rejected', reason: 'INVALID_CREDENTIALS' };
     }
 
+    // The password was right, so the failure counter resets either way. Not
+    // doing this would lock out someone repeatedly trying to sign in to cancel
+    // their own deletion.
     await this.dependencies.loginThrottle.recordSuccess(emailIndex);
+
+    if (await this.dependencies.lockout?.isLockedOut(account.id)) {
+      this.logger.info('login refused: deletion pending', {
+        operation: 'login',
+        errorCode: 'PENDING_DELETION',
+        userId: account.id,
+      });
+      return { outcome: 'rejected', reason: 'PENDING_DELETION' };
+    }
+
     await this.rehashIfNeeded(account, password);
 
     return {

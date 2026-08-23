@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/account/presentation/delete_account_screen.dart';
 import '../../features/career/presentation/career_screen.dart';
 import '../../features/chart/presentation/chart_screen.dart';
 import '../../features/evaluation/presentation/evaluation_detail_screen.dart';
@@ -111,6 +112,14 @@ GoRouter createRouter({
               GoRoute(
                 path: AppRoutes.profile,
                 builder: (context, state) => const ProfileScreen(),
+                routes: [
+                  // Nested, so the back control returns to Profile rather than
+                  // stranding the user on a screen with nowhere to go.
+                  GoRoute(
+                    path: 'konto-loeschen',
+                    builder: (context, state) => const DeleteAccountScreen(),
+                  ),
+                ],
               ),
             ],
           ),

@@ -455,4 +455,74 @@ class AppL10nDe extends AppL10n {
 
   @override
   String get providerNamePassword => 'E-Mail und Passwort';
+
+  @override
+  String get accountSectionTitle => 'Konto';
+
+  @override
+  String get accountDelete => 'Konto löschen';
+
+  @override
+  String get accountDeleteSubtitle => 'Dauerhaft und unwiderruflich';
+
+  @override
+  String get deleteAccountTitle => 'Konto löschen';
+
+  @override
+  String get deleteAccountIntro =>
+      'Dein Konto wird sofort gesperrt. Sieben Tage später werden deine Daten endgültig gelöscht.';
+
+  @override
+  String get deleteAccountErasedHeading => 'Was gelöscht wird';
+
+  @override
+  String get deleteAccountRetainedHeading => 'Was wir behalten müssen';
+
+  @override
+  String get deleteAccountErasedBirthData =>
+      'Geburtsdaten und gespeicherte Personen';
+
+  @override
+  String get deleteAccountErasedCharts => 'Kundalis und Auswertungen';
+
+  @override
+  String get deleteAccountErasedCareer => 'Karriereanalysen';
+
+  @override
+  String get deleteAccountErasedAccount =>
+      'E-Mail-Adresse, Passwort und Anmeldungen';
+
+  @override
+  String get deleteAccountRetainedInvoices =>
+      'Rechnungen zu bezahlten Auswertungen. Das deutsche Steuerrecht (§ 147 AO) verpflichtet uns, sie zehn Jahre lang aufzubewahren. Sie enthalten nur die gesetzlich vorgeschriebenen Angaben.';
+
+  @override
+  String deleteAccountPurgeDate(String date) {
+    return 'Endgültige Löschung am $date';
+  }
+
+  @override
+  String get deleteAccountCancelHint =>
+      'Bis dahin kannst du die Löschung rückgängig machen, indem du dich wieder anmeldest.';
+
+  @override
+  String get deleteAccountCta => 'Konto endgültig löschen';
+
+  @override
+  String get deleteAccountDialogTitle => 'Konto wirklich löschen?';
+
+  @override
+  String get deleteAccountDialogMessage =>
+      'Deine Geburtsdaten, Kundalis und Auswertungen werden gelöscht. Rechnungen müssen wir aus steuerrechtlichen Gründen behalten.';
+
+  @override
+  String get deleteAccountDialogConfirm => 'Ja, Konto löschen';
+
+  @override
+  String get deleteAccountScheduled =>
+      'Dein Konto wurde zur Löschung vorgemerkt.';
+
+  @override
+  String get deleteAccountFailed =>
+      'Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.';
 }
