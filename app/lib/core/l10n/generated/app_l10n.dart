@@ -882,6 +882,126 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'E-Mail und Passwort'**
   String get providerNamePassword;
+
+  /// Section header on the Profile tab grouping account-level actions.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto'**
+  String get accountSectionTitle;
+
+  /// Row on the Profile tab that opens the deletion screen. Apple guideline 5.1.1(v) requires this to be reachable in-app.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto löschen'**
+  String get accountDelete;
+
+  /// Subtitle under 'Konto löschen'. States the consequence before the user taps, not after.
+  ///
+  /// In de, this message translates to:
+  /// **'Dauerhaft und unwiderruflich'**
+  String get accountDeleteSubtitle;
+
+  /// Title of the deletion screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto löschen'**
+  String get deleteAccountTitle;
+
+  /// Opening line of the deletion screen. Names the lockout and the grace period.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Konto wird sofort gesperrt. Sieben Tage später werden deine Daten endgültig gelöscht.'**
+  String get deleteAccountIntro;
+
+  /// Heading above the list of erased data.
+  ///
+  /// In de, this message translates to:
+  /// **'Was gelöscht wird'**
+  String get deleteAccountErasedHeading;
+
+  /// Heading above the retained data. 'müssen' is deliberate: this is a legal obligation, not our choice.
+  ///
+  /// In de, this message translates to:
+  /// **'Was wir behalten müssen'**
+  String get deleteAccountRetainedHeading;
+
+  /// Erased-data item.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtsdaten und gespeicherte Personen'**
+  String get deleteAccountErasedBirthData;
+
+  /// Erased-data item.
+  ///
+  /// In de, this message translates to:
+  /// **'Kundalis und Auswertungen'**
+  String get deleteAccountErasedCharts;
+
+  /// Erased-data item.
+  ///
+  /// In de, this message translates to:
+  /// **'Karriereanalysen'**
+  String get deleteAccountErasedCareer;
+
+  /// Erased-data item.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse, Passwort und Anmeldungen'**
+  String get deleteAccountErasedAccount;
+
+  /// The AC2 explanation. Names the paragraph so the user can check it; says what the retained record does and does not contain.
+  ///
+  /// In de, this message translates to:
+  /// **'Rechnungen zu bezahlten Auswertungen. Das deutsche Steuerrecht (§ 147 AO) verpflichtet uns, sie zehn Jahre lang aufzubewahren. Sie enthalten nur die gesetzlich vorgeschriebenen Angaben.'**
+  String get deleteAccountRetainedInvoices;
+
+  /// Shows the concrete purge date, so the grace period is a date rather than a promise.
+  ///
+  /// In de, this message translates to:
+  /// **'Endgültige Löschung am {date}'**
+  String deleteAccountPurgeDate(String date);
+
+  /// Tells the user the deletion is reversible during the grace period, and how.
+  ///
+  /// In de, this message translates to:
+  /// **'Bis dahin kannst du die Löschung rückgängig machen, indem du dich wieder anmeldest.'**
+  String get deleteAccountCancelHint;
+
+  /// The button that opens the confirmation dialog.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto endgültig löschen'**
+  String get deleteAccountCta;
+
+  /// Confirmation dialog title.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto wirklich löschen?'**
+  String get deleteAccountDialogTitle;
+
+  /// Confirmation dialog body. Repeats the retained category so the last thing the user sees before confirming is accurate.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Geburtsdaten, Kundalis und Auswertungen werden gelöscht. Rechnungen müssen wir aus steuerrechtlichen Gründen behalten.'**
+  String get deleteAccountDialogMessage;
+
+  /// Destructive confirm action.
+  ///
+  /// In de, this message translates to:
+  /// **'Ja, Konto löschen'**
+  String get deleteAccountDialogConfirm;
+
+  /// Confirmation shown after the request succeeds.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Konto wurde zur Löschung vorgemerkt.'**
+  String get deleteAccountScheduled;
+
+  /// Shown when the request could not be sent. Deliberately vague: the user cannot act on the technical reason.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.'**
+  String get deleteAccountFailed;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

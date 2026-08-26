@@ -23,6 +23,13 @@ abstract final class AppRoutes {
   /// reached by redirect, and left by completing it.
   static const String onboarding = '/onboarding';
 
+  /// Self-service account deletion (US-015).
+  ///
+  /// Nested under the Profile tab so the back button returns there, and so the
+  /// path reads as what it is. Apple guideline 5.1.1(v) requires this to be
+  /// reachable in the app at all; AC1 requires it within three taps.
+  static const String deleteAccount = '/profil/konto-loeschen';
+
   /// The design system gallery. Not product surface — reachable by URL so it can
   /// be opened on a device during review, but not linked from any screen.
   static const String designGallery = '/design';

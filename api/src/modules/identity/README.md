@@ -1,7 +1,7 @@
 # Identity module
 
-Accounts, credentials, sessions, and the flows that prove someone controls an email address.
-US-011 and US-016.
+Accounts, credentials, sessions, deletion, and the flows that prove someone controls an email
+address. US-011, US-015 and US-016.
 
 ## What is here
 
@@ -16,6 +16,7 @@ US-011 and US-016.
 | `account.ts` | The account record and its storage port. |
 | `identity_service.ts` | The flows that compose the above. |
 | `session.ts` | Access tokens, rotating refresh tokens and revocation (US-016). |
+| `deletion.ts` | Self-service erasure, the retention plan, and the purge job (US-015). |
 
 ## What is deliberately elsewhere
 
@@ -53,6 +54,9 @@ definition. Two of them have consequences worth repeating:
   succeed.
 - The throttle store must move to Redis. In-process counters multiply the effective limit by the
   number of application instances.
+- `InMemoryDeletionRepository` must persist. A deletion request lost on deploy is an erasure that
+  silently never happens — the kind of failure a supervisory authority finds before we do. The purge
+  job must be idempotent and record its own completion.
 - `InMemorySessionRepository` must persist, or every deploy signs every user out. Its `rotate` must
   become a conditional `UPDATE ... WHERE rotated_at IS NULL` in the same transaction as the insert —
   see the note on reuse detection above.
@@ -85,6 +89,31 @@ alternative, and it puts the session table on the critical path of every call.
 
 `IdentityService` revokes through the `SessionRevoker` port, so a completed password reset tears
 down sessions without the identity module knowing how sessions are stored.
+
+## Deletion (US-015)
+
+Two laws pull against each other and both bind. GDPR Article 17 gives the user erasure; §147 AO and
+the GoBD archive in `docs/COMPLIANCE.md` require invoices to be kept for ten years, and §14 UStG
+says an invoice must carry the customer's name. Article 17(3)(b) is what makes the retention lawful.
+
+So deletion is **not** "remove every row mentioning this person". `DELETION_PLAN` is the written
+list of what goes and what stays, and it is data rather than prose so that the confirmation screen
+the user reads, the purge job, and the Article 30 record all derive from one source. Written three
+times, they will disagree, and the wrong one will be the one shown to the user.
+
+**A module that stores personal data must add an entry and register a `PersonalDataEraser`.**
+`DeletionService` refuses to construct if an erasable category has no eraser — failing at startup
+rather than at 3am, silently leaving data behind.
+
+The account is locked out the moment deletion is requested, not when the purge runs: sessions are
+revoked (US-016) and `IdentityService` refuses login through the `AccountLockout` port. Without
+that, "delete my account" is a button that logs you out. The refusal is reported only *after* the
+password verifies, so whether an address is awaiting deletion is not a question anyone can ask
+about anyone — the same enumeration rule as everywhere else in this module.
+
+The seven-day grace period exists because deletion is the one irreversible thing a stolen account
+can do. It is deliberately far short of the thirty days AC3 allows: Article 12(3) is an outer bound,
+not a budget, and a purge scheduled for day thirty has no room for a failed job.
 
 ## Configuration
 

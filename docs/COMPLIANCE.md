@@ -9,7 +9,7 @@ launch.
 |---|---|
 | Consent (GDPR + TTDSG) | CMP fires before any analytics or crash SDK; reject-all as prominent as accept-all |
 | Right of access / portability | Automated export, machine-readable, within 30 days |
-| Right to erasure | Automated purge; in-app account deletion (also required by Apple 5.1.1(v)) |
+| Right to erasure | In-app account deletion, US-015. Seven-day grace, then purge. What is erased and what is retained is `DELETION_PLAN` in `api/src/modules/identity/deletion.ts` — one list, read by the confirmation screen and the purge job alike |
 | Art. 30 record | Maintained; reviewed annually |
 | DPIA | Required — birth data plus career profiling plus health-adjacent questions |
 | Art. 28 processors | Signed DPA with Stripe, cloud, CMP, analytics, email, LLM vendor; AVV with every astrologer |
@@ -31,6 +31,8 @@ launch.
 - Customer country determined by two non-contradictory pieces of evidence.
 - Cross-border EU B2C sales above EUR 10,000/year require destination-country VAT via OSS.
 - Gapless invoice numbering, 10-year GoBD-compliant archive.
+- The archive survives account deletion, under GDPR Art. 17(3)(b). The user is told so before they
+  confirm, naming §147 AO — see US-015 AC2. Retained invoices keep only what §14 UStG requires.
 
 ## App stores
 

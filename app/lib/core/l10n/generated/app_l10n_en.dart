@@ -450,4 +450,73 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get providerNamePassword => 'Email and password';
+
+  @override
+  String get accountSectionTitle => 'Account';
+
+  @override
+  String get accountDelete => 'Delete account';
+
+  @override
+  String get accountDeleteSubtitle => 'Permanent and irreversible';
+
+  @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountIntro =>
+      'Your account is locked immediately. Seven days later your data is permanently erased.';
+
+  @override
+  String get deleteAccountErasedHeading => 'What is deleted';
+
+  @override
+  String get deleteAccountRetainedHeading => 'What we are required to keep';
+
+  @override
+  String get deleteAccountErasedBirthData => 'Birth details and saved people';
+
+  @override
+  String get deleteAccountErasedCharts => 'Kundalis and evaluations';
+
+  @override
+  String get deleteAccountErasedCareer => 'Career analyses';
+
+  @override
+  String get deleteAccountErasedAccount =>
+      'Email address, password and sign-ins';
+
+  @override
+  String get deleteAccountRetainedInvoices =>
+      'Invoices for evaluations you paid for. German tax law (§ 147 AO) requires us to keep them for ten years. They contain only the legally required details.';
+
+  @override
+  String deleteAccountPurgeDate(String date) {
+    return 'Final deletion on $date';
+  }
+
+  @override
+  String get deleteAccountCancelHint =>
+      'Until then you can undo the deletion by signing in again.';
+
+  @override
+  String get deleteAccountCta => 'Permanently delete account';
+
+  @override
+  String get deleteAccountDialogTitle => 'Really delete your account?';
+
+  @override
+  String get deleteAccountDialogMessage =>
+      'Your birth details, kundalis and evaluations will be deleted. We must keep invoices for tax reasons.';
+
+  @override
+  String get deleteAccountDialogConfirm => 'Yes, delete it';
+
+  @override
+  String get deleteAccountScheduled =>
+      'Your account is scheduled for deletion.';
+
+  @override
+  String get deleteAccountFailed =>
+      'The deletion could not be requested. Please try again later.';
 }

@@ -288,5 +288,90 @@
     "description": "Brand name. Never translated."
   },
   "providerNameGoogle": "Google",
-  "providerNamePassword": "E-Mail und Passwort"
+  "providerNamePassword": "E-Mail und Passwort",
+  "accountSectionTitle": "Konto",
+  "@accountSectionTitle": {
+    "description": "Section header on the Profile tab grouping account-level actions."
+  },
+  "accountDelete": "Konto löschen",
+  "@accountDelete": {
+    "description": "Row on the Profile tab that opens the deletion screen. Apple guideline 5.1.1(v) requires this to be reachable in-app."
+  },
+  "accountDeleteSubtitle": "Dauerhaft und unwiderruflich",
+  "@accountDeleteSubtitle": {
+    "description": "Subtitle under 'Konto löschen'. States the consequence before the user taps, not after."
+  },
+  "deleteAccountTitle": "Konto löschen",
+  "@deleteAccountTitle": {
+    "description": "Title of the deletion screen."
+  },
+  "deleteAccountIntro": "Dein Konto wird sofort gesperrt. Sieben Tage später werden deine Daten endgültig gelöscht.",
+  "@deleteAccountIntro": {
+    "description": "Opening line of the deletion screen. Names the lockout and the grace period."
+  },
+  "deleteAccountErasedHeading": "Was gelöscht wird",
+  "@deleteAccountErasedHeading": {
+    "description": "Heading above the list of erased data."
+  },
+  "deleteAccountRetainedHeading": "Was wir behalten müssen",
+  "@deleteAccountRetainedHeading": {
+    "description": "Heading above the retained data. 'müssen' is deliberate: this is a legal obligation, not our choice."
+  },
+  "deleteAccountErasedBirthData": "Geburtsdaten und gespeicherte Personen",
+  "@deleteAccountErasedBirthData": {
+    "description": "Erased-data item."
+  },
+  "deleteAccountErasedCharts": "Kundalis und Auswertungen",
+  "@deleteAccountErasedCharts": {
+    "description": "Erased-data item."
+  },
+  "deleteAccountErasedCareer": "Karriereanalysen",
+  "@deleteAccountErasedCareer": {
+    "description": "Erased-data item."
+  },
+  "deleteAccountErasedAccount": "E-Mail-Adresse, Passwort und Anmeldungen",
+  "@deleteAccountErasedAccount": {
+    "description": "Erased-data item."
+  },
+  "deleteAccountRetainedInvoices": "Rechnungen zu bezahlten Auswertungen. Das deutsche Steuerrecht (§ 147 AO) verpflichtet uns, sie zehn Jahre lang aufzubewahren. Sie enthalten nur die gesetzlich vorgeschriebenen Angaben.",
+  "@deleteAccountRetainedInvoices": {
+    "description": "The AC2 explanation. Names the paragraph so the user can check it; says what the retained record does and does not contain."
+  },
+  "deleteAccountPurgeDate": "Endgültige Löschung am {date}",
+  "@deleteAccountPurgeDate": {
+    "description": "Shows the concrete purge date, so the grace period is a date rather than a promise.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteAccountCancelHint": "Bis dahin kannst du die Löschung rückgängig machen, indem du dich wieder anmeldest.",
+  "@deleteAccountCancelHint": {
+    "description": "Tells the user the deletion is reversible during the grace period, and how."
+  },
+  "deleteAccountCta": "Konto endgültig löschen",
+  "@deleteAccountCta": {
+    "description": "The button that opens the confirmation dialog."
+  },
+  "deleteAccountDialogTitle": "Konto wirklich löschen?",
+  "@deleteAccountDialogTitle": {
+    "description": "Confirmation dialog title."
+  },
+  "deleteAccountDialogMessage": "Deine Geburtsdaten, Kundalis und Auswertungen werden gelöscht. Rechnungen müssen wir aus steuerrechtlichen Gründen behalten.",
+  "@deleteAccountDialogMessage": {
+    "description": "Confirmation dialog body. Repeats the retained category so the last thing the user sees before confirming is accurate."
+  },
+  "deleteAccountDialogConfirm": "Ja, Konto löschen",
+  "@deleteAccountDialogConfirm": {
+    "description": "Destructive confirm action."
+  },
+  "deleteAccountScheduled": "Dein Konto wurde zur Löschung vorgemerkt.",
+  "@deleteAccountScheduled": {
+    "description": "Confirmation shown after the request succeeds."
+  },
+  "deleteAccountFailed": "Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.",
+  "@deleteAccountFailed": {
+    "description": "Shown when the request could not be sent. Deliberately vague: the user cannot act on the technical reason."
+  }
 }
