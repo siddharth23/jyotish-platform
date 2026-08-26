@@ -14,6 +14,18 @@ its source. `scripts/check_agpl_boundary.sh` fails the build if you try.
 
 See `docs/AGPL-BOUNDARY.md`.
 
+## TypeScript version
+
+Pinned to **6.x**, not 7. `typescript-eslint` declares `typescript >=4.8.4 <6.1.0` as a peer
+range, so TypeScript 7 fails `npm install` with ERESOLVE before any code runs. Bumping past 6
+means losing TypeScript-aware linting entirely — including the `no-explicit-any` and
+`explicit-function-return-type` rules this repo requires — so the pin stays until
+typescript-eslint ships support (typescript-eslint#10940).
+
+`tsconfig.json` sets `"types": ["node"]` explicitly. TypeScript 6 stopped including every
+installed `@types/*` package by default, and without it `Buffer` and `node:crypto` are unresolved
+across the identity module. Removing that line looks harmless and breaks the build.
+
 ## Modules
 
 ```
