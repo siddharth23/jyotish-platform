@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/account/presentation/delete_account_screen.dart';
+import '../../features/birth_data/presentation/birth_data_screen.dart';
 import '../../features/career/presentation/career_screen.dart';
 import '../../features/chart/presentation/chart_screen.dart';
 import '../../features/evaluation/presentation/evaluation_detail_screen.dart';
@@ -77,6 +78,12 @@ GoRouter createRouter({
               GoRoute(
                 path: AppRoutes.chart,
                 builder: (context, state) => const ChartScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'geburtsdaten',
+                    builder: (context, state) => const BirthDataScreen(),
+                  ),
+                ],
               ),
             ],
           ),

@@ -373,5 +373,81 @@
   "deleteAccountFailed": "Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.",
   "@deleteAccountFailed": {
     "description": "Shown when the request could not be sent. Deliberately vague: the user cannot act on the technical reason."
+  },
+  "birthDataTitle": "Geburtsdaten",
+  "@birthDataTitle": {
+    "description": "Title of the birth-data entry screen."
+  },
+  "birthDataIntro": "Für ein genaues Kundali brauchen wir Datum und Uhrzeit deiner Geburt.",
+  "@birthDataIntro": {
+    "description": "Opening line of the birth-data screen."
+  },
+  "birthDateLabel": "Geburtsdatum",
+  "@birthDateLabel": {
+    "description": "Label for the birth date field."
+  },
+  "birthDateHint": "TT.MM.JJJJ",
+  "@birthDateHint": {
+    "description": "Placeholder showing the required German date format. AC1."
+  },
+  "birthTimeLabel": "Geburtszeit",
+  "@birthTimeLabel": {
+    "description": "Label for the birth time field."
+  },
+  "birthTimeHint": "HH:MM",
+  "@birthTimeHint": {
+    "description": "Placeholder for the 24-hour time. AC1."
+  },
+  "birthTimeHelper": "24-Stunden-Format, zum Beispiel 07:30 oder 19:45",
+  "@birthTimeHelper": {
+    "description": "Helper text. Names the 24-hour convention explicitly so 7:30 is not entered for half past seven in the evening."
+  },
+  "birthTimeUnknownLabel": "Geburtszeit unbekannt",
+  "@birthTimeUnknownLabel": {
+    "description": "Label of the switch that turns on the solar-chart fallback. AC2."
+  },
+  "birthTimeWhyItMattersTitle": "Warum die genaue Minute zählt",
+  "@birthTimeWhyItMattersTitle": {
+    "description": "Heading of the inline explanation. AC4."
+  },
+  "birthTimeWhyItMatters": "Der Aszendent verschiebt sich etwa alle vier Minuten um ein Grad und kann innerhalb einer Stunde in ein anderes Zeichen wechseln. Er bestimmt die Häuser — und damit fast jede Aussage zu Beruf, Partnerschaft und Zeitpunkten. Steht die Uhrzeit auf deiner Geburtsurkunde, nimm diese.",
+  "@birthTimeWhyItMatters": {
+    "description": "AC4. Gives the actual mechanism and a concrete next step, rather than telling the user precision is important."
+  },
+  "birthTimeUnknownCaveatTitle": "Ohne Uhrzeit: Sonnenhoroskop",
+  "@birthTimeUnknownCaveatTitle": {
+    "description": "Title of the solar-chart caveat banner. AC2."
+  },
+  "birthTimeUnknownCaveat": "Ohne Geburtszeit gibt es keinen Aszendenten und damit keine Häuser. Wir berechnen ein Sonnenhoroskop: Planetenstände und Dashas stimmen, Aussagen zu Beruf, Partnerschaft und Zeitpunkten sind aber nur eingeschränkt möglich.",
+  "@birthTimeUnknownCaveat": {
+    "description": "AC2. Says what is actually lost, rather than implying a slightly less precise result."
+  },
+  "birthDateErrorMalformed": "Bitte im Format TT.MM.JJJJ eingeben",
+  "@birthDateErrorMalformed": {
+    "description": "Shown when the date does not match the required format."
+  },
+  "birthDateErrorNotACalendarDate": "Dieses Datum gibt es nicht",
+  "@birthDateErrorNotACalendarDate": {
+    "description": "Shown for 31.04 or 29.02 in a common year."
+  },
+  "birthDateErrorInFuture": "Das Geburtsdatum kann nicht in der Zukunft liegen",
+  "@birthDateErrorInFuture": {
+    "description": "AC3."
+  },
+  "birthDateErrorTooEarly": "Bitte ein Jahr ab 1800 eingeben",
+  "@birthDateErrorTooEarly": {
+    "description": "AC3."
+  },
+  "birthTimeErrorMalformed": "Bitte im Format HH:MM eingeben, zum Beispiel 19:45",
+  "@birthTimeErrorMalformed": {
+    "description": "Shown when the time does not match. The example is deliberately an evening one, to surface the 24-hour convention."
+  },
+  "birthTimeErrorOutOfRange": "Bitte eine Uhrzeit zwischen 00:00 und 23:59 eingeben",
+  "@birthTimeErrorOutOfRange": {
+    "description": "Shown for 24:00 or minute 60."
+  },
+  "birthDataContinue": "Weiter",
+  "@birthDataContinue": {
+    "description": "Primary action on the birth-data screen."
   }
 }

@@ -519,4 +519,67 @@ class AppL10nEn extends AppL10n {
   @override
   String get deleteAccountFailed =>
       'The deletion could not be requested. Please try again later.';
+
+  @override
+  String get birthDataTitle => 'Birth details';
+
+  @override
+  String get birthDataIntro =>
+      'For an accurate kundali we need the date and time of your birth.';
+
+  @override
+  String get birthDateLabel => 'Date of birth';
+
+  @override
+  String get birthDateHint => 'DD.MM.YYYY';
+
+  @override
+  String get birthTimeLabel => 'Time of birth';
+
+  @override
+  String get birthTimeHint => 'HH:MM';
+
+  @override
+  String get birthTimeHelper => '24-hour format, for example 07:30 or 19:45';
+
+  @override
+  String get birthTimeUnknownLabel => 'Time of birth unknown';
+
+  @override
+  String get birthTimeWhyItMattersTitle => 'Why the exact minute matters';
+
+  @override
+  String get birthTimeWhyItMatters =>
+      'The ascendant moves about one degree every four minutes and can change sign within an hour. It sets the houses — and with them almost everything about career, relationships and timing. If your birth certificate gives a time, use that one.';
+
+  @override
+  String get birthTimeUnknownCaveatTitle => 'Without a time: solar chart';
+
+  @override
+  String get birthTimeUnknownCaveat =>
+      'Without a birth time there is no ascendant, and therefore no houses. We calculate a solar chart: planetary positions and dashas are correct, but statements about career, relationships and timing are only partly possible.';
+
+  @override
+  String get birthDateErrorMalformed => 'Please enter it as DD.MM.YYYY';
+
+  @override
+  String get birthDateErrorNotACalendarDate => 'That date does not exist';
+
+  @override
+  String get birthDateErrorInFuture =>
+      'The date of birth cannot be in the future';
+
+  @override
+  String get birthDateErrorTooEarly => 'Please enter a year from 1800 onwards';
+
+  @override
+  String get birthTimeErrorMalformed =>
+      'Please enter it as HH:MM, for example 19:45';
+
+  @override
+  String get birthTimeErrorOutOfRange =>
+      'Please enter a time between 00:00 and 23:59';
+
+  @override
+  String get birthDataContinue => 'Continue';
 }

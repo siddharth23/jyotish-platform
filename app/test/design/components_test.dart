@@ -88,6 +88,30 @@ void main() {
   });
 
   group('AppTextField', () {
+    testWidgets('a long required label does not overflow at 2x text',
+        (tester) async {
+      // The label Row holds the label and the required marker. Without a
+      // Flexible around the label, a long German label at a large text scale
+      // pushes the marker off the right edge and throws. Found by US-020's
+      // "Geburtsdatum" field on a 320pt screen.
+      tester.view.physicalSize = const Size(320, 640);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+          child: host(const AppTextField(
+            label: 'Geburtsdatum der zu bewertenden Person',
+            isRequired: true,
+          )),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 50));
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('shows helper text when there is no error', (tester) async {
       await tester.pumpWidget(
         host(const AppTextField(
