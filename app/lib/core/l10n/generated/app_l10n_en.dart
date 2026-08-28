@@ -582,4 +582,54 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get birthDataContinue => 'Continue';
+
+  @override
+  String get birthPlaceLabel => 'Place of birth';
+
+  @override
+  String get birthPlaceHint => 'Enter a town or city';
+
+  @override
+  String get birthPlaceHelper =>
+      'Type the place name — Muenchen or Munich work too';
+
+  @override
+  String get birthPlaceNoResults => 'No place found';
+
+  @override
+  String get birthPlaceManualToggle => 'Can\'t find it? Enter coordinates';
+
+  @override
+  String get birthPlaceManualExplainer =>
+      'Small places are missing from our directory. You can find latitude and longitude in any maps app by long-pressing the location.';
+
+  @override
+  String get birthPlaceLatitude => 'Latitude';
+
+  @override
+  String get birthPlaceLongitude => 'Longitude';
+
+  @override
+  String get birthPlaceLatitudeHint => '48.1374 or 48° 8\' 15\" N';
+
+  @override
+  String get birthPlaceLongitudeHint => '11.5755 or 11° 34\' 32\" E';
+
+  @override
+  String get birthPlaceCoordinateMalformed =>
+      'Please enter a decimal number, or degrees/minutes/seconds';
+
+  @override
+  String get birthPlaceLatitudeOutOfRange =>
+      'Latitude must be between -90 and 90';
+
+  @override
+  String get birthPlaceLongitudeOutOfRange =>
+      'Longitude must be between -180 and 180';
+
+  @override
+  String get birthPlaceSearchToggle => 'Search for a place instead';
+
+  @override
+  String get birthPlaceLoading => 'Loading place directory';
 }
