@@ -57,6 +57,11 @@ class _BirthDataScreenState extends ConsumerState<BirthDataScreen> {
 
     return AppScaffold(
       title: l10n.birthDataTitle,
+      // The screen is pushed from the Kundali tab, so it needs its own way
+      // back. Relying on the Android system gesture leaves iOS users, and
+      // anyone using a screen reader, with no visible affordance at all.
+      onBack: () => Navigator.of(context).maybePop(),
+      backTooltip: l10n.commonClose,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       body: ListView(
         children: [

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/design/design_system.dart';
 import '../../../core/l10n/generated/app_l10n.dart';
+import '../../../core/navigation/app_routes.dart';
 
-/// Kundali. Placeholder until birth-data capture (E03) and the engine exist.
+/// Kundali.
+///
+/// Still a placeholder for the chart itself — the engine is US-031 onwards —
+/// but the empty state's action now goes somewhere: birth-data capture is the
+/// first step of getting a chart, and this tab is the only place a user would
+/// look for it.
 class ChartScreen extends StatelessWidget {
   const ChartScreen({super.key});
 
@@ -15,8 +22,7 @@ class ChartScreen extends StatelessWidget {
       title: l10n.emptyChartTitle,
       message: l10n.emptyChartMessage,
       actionLabel: l10n.emptyChartAction,
-      // No destination yet: the birth-data flow is US-020 onwards.
-      onAction: null,
+      onAction: () => context.push(AppRoutes.birthData),
     );
   }
 }
