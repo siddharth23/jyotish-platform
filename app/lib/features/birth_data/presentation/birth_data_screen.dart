@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/design/design_system.dart';
 import '../../../core/l10n/generated/app_l10n.dart';
 import '../birth_details.dart';
+import '../place.dart';
+import 'birth_place_field.dart';
 
 /// Birth date and time entry (US-020).
 ///
@@ -21,22 +24,23 @@ import '../birth_details.dart';
 /// are the ones who will not open a tooltip to find out whether guessing
 /// matters, and a guessed time produces a confident, wrong chart — worse than
 /// no time at all, because the solar-chart caveat at least tells the truth.
-class BirthDataScreen extends StatefulWidget {
+class BirthDataScreen extends ConsumerStatefulWidget {
   const BirthDataScreen({this.onSubmit, super.key});
 
   /// Called with the validated details. Null while there is nowhere to send
   /// them — the profile module (US-014) owns persistence.
-  final ValueChanged<BirthDetails>? onSubmit;
+  final void Function(BirthDetails details, Place? place)? onSubmit;
 
   @override
-  State<BirthDataScreen> createState() => _BirthDataScreenState();
+  ConsumerState<BirthDataScreen> createState() => _BirthDataScreenState();
 }
 
-class _BirthDataScreenState extends State<BirthDataScreen> {
+class _BirthDataScreenState extends ConsumerState<BirthDataScreen> {
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
 
   bool _timeUnknown = false;
+  Place? _place;
   BirthFieldRejection? _dateError;
   BirthFieldRejection? _timeError;
 
@@ -62,6 +66,8 @@ class _BirthDataScreenState extends State<BirthDataScreen> {
             style: AppTypography.bodyLarge
                 .copyWith(color: context.colors.onSurface),
           ),
+          const SizedBox(height: AppSpacing.lg),
+          BirthPlaceField(onSelected: (place) => _place = place),
           const SizedBox(height: AppSpacing.lg),
           AppTextField(
             label: l10n.birthDateLabel,
@@ -166,6 +172,7 @@ class _BirthDataScreenState extends State<BirthDataScreen> {
         date: date.value,
         time: time == null ? null : (time as ParseSuccess<BirthTime>).value,
       ),
+      _place,
     );
   }
 

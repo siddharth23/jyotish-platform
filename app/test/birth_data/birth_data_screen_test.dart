@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/design/design_system.dart';
 import 'package:jyotish_app/core/l10n/generated/app_l10n.dart';
 import 'package:jyotish_app/core/l10n/locale_controller.dart';
 import 'package:jyotish_app/features/birth_data/birth_details.dart';
+import 'package:jyotish_app/features/birth_data/place.dart';
 import 'package:jyotish_app/features/birth_data/presentation/birth_data_screen.dart';
 
 Widget host({
-  ValueChanged<BirthDetails>? onSubmit,
+  void Function(BirthDetails details, Place? place)? onSubmit,
   Locale locale = const Locale('de', 'DE'),
 }) {
-  return MaterialApp(
-    theme: AppTheme.light,
-    locale: locale,
-    supportedLocales: supportedLocales,
-    localizationsDelegates: const [
-      AppL10n.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    home: BirthDataScreen(onSubmit: onSubmit),
+  return ProviderScope(
+    child: MaterialApp(
+      theme: AppTheme.light,
+      locale: locale,
+      supportedLocales: supportedLocales,
+      localizationsDelegates: const [
+        AppL10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: BirthDataScreen(onSubmit: onSubmit),
+    ),
   );
 }
 
@@ -68,7 +72,7 @@ void main() {
 
     testWidgets('a valid entry submits the parsed details', (tester) async {
       BirthDetails? submitted;
-      await tester.pumpWidget(host(onSubmit: (d) => submitted = d));
+      await tester.pumpWidget(host(onSubmit: (d, _) => submitted = d));
       await tester.pumpAndSettle();
 
       await tester.enterText(fieldWithLabel('Geburtsdatum'), '17.05.1990');
@@ -103,7 +107,7 @@ void main() {
     testWidgets('31 April is named as a date that does not exist',
         (tester) async {
       BirthDetails? submitted;
-      await tester.pumpWidget(host(onSubmit: (d) => submitted = d));
+      await tester.pumpWidget(host(onSubmit: (d, _) => submitted = d));
       await tester.pumpAndSettle();
 
       await tester.enterText(fieldWithLabel('Geburtsdatum'), '31.04.2000');
@@ -166,7 +170,7 @@ void main() {
 
     testWidgets('an empty form does not submit', (tester) async {
       BirthDetails? submitted;
-      await tester.pumpWidget(host(onSubmit: (d) => submitted = d));
+      await tester.pumpWidget(host(onSubmit: (d, _) => submitted = d));
       await tester.pumpAndSettle();
 
       await tapAction(tester, 'Weiter');
@@ -203,7 +207,7 @@ void main() {
     testWidgets('submitting without a time yields unknown precision',
         (tester) async {
       BirthDetails? submitted;
-      await tester.pumpWidget(host(onSubmit: (d) => submitted = d));
+      await tester.pumpWidget(host(onSubmit: (d, _) => submitted = d));
       await tester.pumpAndSettle();
 
       await tester.enterText(fieldWithLabel('Geburtsdatum'), '17.05.1990');
@@ -221,7 +225,7 @@ void main() {
       // now behind a hidden field; leaving it set would block the user with a
       // message they cannot see or fix.
       BirthDetails? submitted;
-      await tester.pumpWidget(host(onSubmit: (d) => submitted = d));
+      await tester.pumpWidget(host(onSubmit: (d, _) => submitted = d));
       await tester.pumpAndSettle();
 
       await tester.enterText(fieldWithLabel('Geburtsdatum'), '17.05.1990');
@@ -249,11 +253,17 @@ void main() {
       await tester.pumpWidget(host());
       await tester.pumpAndSettle();
 
-      final text = tester.widget<Text>(
-        find.byWidgetPredicate(
-          (w) => w is Text && (w.data?.contains('Aszendent') ?? false),
-        ),
+      // The list is lazy and the birthplace field sits above this, so the
+      // explanation is not built until it is scrolled near the viewport.
+      final finder = find.byWidgetPredicate(
+        (w) => w is Text && (w.data?.contains('Aszendent') ?? false),
       );
+      await tester.scrollUntilVisible(
+        finder,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      final text = tester.widget<Text>(finder);
       expect(text.data, contains('Häuser'));
       expect(text.data, contains('Geburtsurkunde'));
     });

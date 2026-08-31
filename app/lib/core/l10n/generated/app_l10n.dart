@@ -1116,6 +1116,96 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Weiter'**
   String get birthDataContinue;
+
+  /// Label for the birthplace search field.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtsort'**
+  String get birthPlaceLabel;
+
+  /// Placeholder for the birthplace search field.
+  ///
+  /// In de, this message translates to:
+  /// **'Stadt oder Ort eingeben'**
+  String get birthPlaceHint;
+
+  /// Helper text. Names the alternative spellings explicitly so people do not think they have to find the umlaut key.
+  ///
+  /// In de, this message translates to:
+  /// **'Tippe den Ortsnamen — auch Muenchen oder Munich funktionieren'**
+  String get birthPlaceHelper;
+
+  /// Shown when the search returns nothing.
+  ///
+  /// In de, this message translates to:
+  /// **'Kein Ort gefunden'**
+  String get birthPlaceNoResults;
+
+  /// Opens the manual coordinate fallback. AC4.
+  ///
+  /// In de, this message translates to:
+  /// **'Ort nicht gefunden? Koordinaten eingeben'**
+  String get birthPlaceManualToggle;
+
+  /// Explains why the fallback exists and where to get the numbers, so the user is not sent away to work it out.
+  ///
+  /// In de, this message translates to:
+  /// **'Kleine Orte fehlen in unserem Verzeichnis. Breite und Länge findest du in jeder Karten-App, wenn du lange auf den Ort tippst.'**
+  String get birthPlaceManualExplainer;
+
+  /// Latitude field label.
+  ///
+  /// In de, this message translates to:
+  /// **'Breite'**
+  String get birthPlaceLatitude;
+
+  /// Longitude field label.
+  ///
+  /// In de, this message translates to:
+  /// **'Länge'**
+  String get birthPlaceLongitude;
+
+  /// Shows both accepted notations.
+  ///
+  /// In de, this message translates to:
+  /// **'48.1374 oder 48° 8\' 15\" N'**
+  String get birthPlaceLatitudeHint;
+
+  /// Shows both accepted notations. O is Ost.
+  ///
+  /// In de, this message translates to:
+  /// **'11.5755 oder 11° 34\' 32\" O'**
+  String get birthPlaceLongitudeHint;
+
+  /// Shown for an unparseable coordinate.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte als Dezimalzahl oder als Grad/Minuten/Sekunden eingeben'**
+  String get birthPlaceCoordinateMalformed;
+
+  /// Latitude range error.
+  ///
+  /// In de, this message translates to:
+  /// **'Breite muss zwischen -90 und 90 liegen'**
+  String get birthPlaceLatitudeOutOfRange;
+
+  /// Longitude range error.
+  ///
+  /// In de, this message translates to:
+  /// **'Länge muss zwischen -180 und 180 liegen'**
+  String get birthPlaceLongitudeOutOfRange;
+
+  /// Returns from the manual fallback to the search field.
+  ///
+  /// In de, this message translates to:
+  /// **'Stattdessen nach Ort suchen'**
+  String get birthPlaceSearchToggle;
+
+  /// Announced while the bundled gazetteer decodes on first use.
+  ///
+  /// In de, this message translates to:
+  /// **'Ortsverzeichnis wird geladen'**
+  String get birthPlaceLoading;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

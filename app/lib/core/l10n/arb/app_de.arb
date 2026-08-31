@@ -449,5 +449,65 @@
   "birthDataContinue": "Weiter",
   "@birthDataContinue": {
     "description": "Primary action on the birth-data screen."
+  },
+  "birthPlaceLabel": "Geburtsort",
+  "@birthPlaceLabel": {
+    "description": "Label for the birthplace search field."
+  },
+  "birthPlaceHint": "Stadt oder Ort eingeben",
+  "@birthPlaceHint": {
+    "description": "Placeholder for the birthplace search field."
+  },
+  "birthPlaceHelper": "Tippe den Ortsnamen — auch Muenchen oder Munich funktionieren",
+  "@birthPlaceHelper": {
+    "description": "Helper text. Names the alternative spellings explicitly so people do not think they have to find the umlaut key."
+  },
+  "birthPlaceNoResults": "Kein Ort gefunden",
+  "@birthPlaceNoResults": {
+    "description": "Shown when the search returns nothing."
+  },
+  "birthPlaceManualToggle": "Ort nicht gefunden? Koordinaten eingeben",
+  "@birthPlaceManualToggle": {
+    "description": "Opens the manual coordinate fallback. AC4."
+  },
+  "birthPlaceManualExplainer": "Kleine Orte fehlen in unserem Verzeichnis. Breite und Länge findest du in jeder Karten-App, wenn du lange auf den Ort tippst.",
+  "@birthPlaceManualExplainer": {
+    "description": "Explains why the fallback exists and where to get the numbers, so the user is not sent away to work it out."
+  },
+  "birthPlaceLatitude": "Breite",
+  "@birthPlaceLatitude": {
+    "description": "Latitude field label."
+  },
+  "birthPlaceLongitude": "Länge",
+  "@birthPlaceLongitude": {
+    "description": "Longitude field label."
+  },
+  "birthPlaceLatitudeHint": "48.1374 oder 48° 8' 15\" N",
+  "@birthPlaceLatitudeHint": {
+    "description": "Shows both accepted notations."
+  },
+  "birthPlaceLongitudeHint": "11.5755 oder 11° 34' 32\" O",
+  "@birthPlaceLongitudeHint": {
+    "description": "Shows both accepted notations. O is Ost."
+  },
+  "birthPlaceCoordinateMalformed": "Bitte als Dezimalzahl oder als Grad/Minuten/Sekunden eingeben",
+  "@birthPlaceCoordinateMalformed": {
+    "description": "Shown for an unparseable coordinate."
+  },
+  "birthPlaceLatitudeOutOfRange": "Breite muss zwischen -90 und 90 liegen",
+  "@birthPlaceLatitudeOutOfRange": {
+    "description": "Latitude range error."
+  },
+  "birthPlaceLongitudeOutOfRange": "Länge muss zwischen -180 und 180 liegen",
+  "@birthPlaceLongitudeOutOfRange": {
+    "description": "Longitude range error."
+  },
+  "birthPlaceSearchToggle": "Stattdessen nach Ort suchen",
+  "@birthPlaceSearchToggle": {
+    "description": "Returns from the manual fallback to the search field."
+  },
+  "birthPlaceLoading": "Ortsverzeichnis wird geladen",
+  "@birthPlaceLoading": {
+    "description": "Announced while the bundled gazetteer decodes on first use."
   }
 }

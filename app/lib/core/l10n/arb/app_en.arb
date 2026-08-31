@@ -170,5 +170,20 @@
   "birthDateErrorTooEarly": "Please enter a year from 1800 onwards",
   "birthTimeErrorMalformed": "Please enter it as HH:MM, for example 19:45",
   "birthTimeErrorOutOfRange": "Please enter a time between 00:00 and 23:59",
-  "birthDataContinue": "Continue"
+  "birthDataContinue": "Continue",
+  "birthPlaceLabel": "Place of birth",
+  "birthPlaceHint": "Enter a town or city",
+  "birthPlaceHelper": "Type the place name — Muenchen or Munich work too",
+  "birthPlaceNoResults": "No place found",
+  "birthPlaceManualToggle": "Can't find it? Enter coordinates",
+  "birthPlaceManualExplainer": "Small places are missing from our directory. You can find latitude and longitude in any maps app by long-pressing the location.",
+  "birthPlaceLatitude": "Latitude",
+  "birthPlaceLongitude": "Longitude",
+  "birthPlaceLatitudeHint": "48.1374 or 48° 8' 15\" N",
+  "birthPlaceLongitudeHint": "11.5755 or 11° 34' 32\" E",
+  "birthPlaceCoordinateMalformed": "Please enter a decimal number, or degrees/minutes/seconds",
+  "birthPlaceLatitudeOutOfRange": "Latitude must be between -90 and 90",
+  "birthPlaceLongitudeOutOfRange": "Longitude must be between -180 and 180",
+  "birthPlaceSearchToggle": "Search for a place instead",
+  "birthPlaceLoading": "Loading place directory"
 }

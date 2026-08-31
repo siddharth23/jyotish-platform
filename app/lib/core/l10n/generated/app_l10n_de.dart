@@ -589,4 +589,55 @@ class AppL10nDe extends AppL10n {
 
   @override
   String get birthDataContinue => 'Weiter';
+
+  @override
+  String get birthPlaceLabel => 'Geburtsort';
+
+  @override
+  String get birthPlaceHint => 'Stadt oder Ort eingeben';
+
+  @override
+  String get birthPlaceHelper =>
+      'Tippe den Ortsnamen — auch Muenchen oder Munich funktionieren';
+
+  @override
+  String get birthPlaceNoResults => 'Kein Ort gefunden';
+
+  @override
+  String get birthPlaceManualToggle =>
+      'Ort nicht gefunden? Koordinaten eingeben';
+
+  @override
+  String get birthPlaceManualExplainer =>
+      'Kleine Orte fehlen in unserem Verzeichnis. Breite und Länge findest du in jeder Karten-App, wenn du lange auf den Ort tippst.';
+
+  @override
+  String get birthPlaceLatitude => 'Breite';
+
+  @override
+  String get birthPlaceLongitude => 'Länge';
+
+  @override
+  String get birthPlaceLatitudeHint => '48.1374 oder 48° 8\' 15\" N';
+
+  @override
+  String get birthPlaceLongitudeHint => '11.5755 oder 11° 34\' 32\" O';
+
+  @override
+  String get birthPlaceCoordinateMalformed =>
+      'Bitte als Dezimalzahl oder als Grad/Minuten/Sekunden eingeben';
+
+  @override
+  String get birthPlaceLatitudeOutOfRange =>
+      'Breite muss zwischen -90 und 90 liegen';
+
+  @override
+  String get birthPlaceLongitudeOutOfRange =>
+      'Länge muss zwischen -180 und 180 liegen';
+
+  @override
+  String get birthPlaceSearchToggle => 'Stattdessen nach Ort suchen';
+
+  @override
+  String get birthPlaceLoading => 'Ortsverzeichnis wird geladen';
 }
