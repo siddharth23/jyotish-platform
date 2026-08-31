@@ -1002,6 +1002,120 @@ abstract class AppL10n {
   /// In de, this message translates to:
   /// **'Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.'**
   String get deleteAccountFailed;
+
+  /// Title of the birth-data entry screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtsdaten'**
+  String get birthDataTitle;
+
+  /// Opening line of the birth-data screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Für ein genaues Kundali brauchen wir Datum und Uhrzeit deiner Geburt.'**
+  String get birthDataIntro;
+
+  /// Label for the birth date field.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtsdatum'**
+  String get birthDateLabel;
+
+  /// Placeholder showing the required German date format. AC1.
+  ///
+  /// In de, this message translates to:
+  /// **'TT.MM.JJJJ'**
+  String get birthDateHint;
+
+  /// Label for the birth time field.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtszeit'**
+  String get birthTimeLabel;
+
+  /// Placeholder for the 24-hour time. AC1.
+  ///
+  /// In de, this message translates to:
+  /// **'HH:MM'**
+  String get birthTimeHint;
+
+  /// Helper text. Names the 24-hour convention explicitly so 7:30 is not entered for half past seven in the evening.
+  ///
+  /// In de, this message translates to:
+  /// **'24-Stunden-Format, zum Beispiel 07:30 oder 19:45'**
+  String get birthTimeHelper;
+
+  /// Label of the switch that turns on the solar-chart fallback. AC2.
+  ///
+  /// In de, this message translates to:
+  /// **'Geburtszeit unbekannt'**
+  String get birthTimeUnknownLabel;
+
+  /// Heading of the inline explanation. AC4.
+  ///
+  /// In de, this message translates to:
+  /// **'Warum die genaue Minute zählt'**
+  String get birthTimeWhyItMattersTitle;
+
+  /// AC4. Gives the actual mechanism and a concrete next step, rather than telling the user precision is important.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Aszendent verschiebt sich etwa alle vier Minuten um ein Grad und kann innerhalb einer Stunde in ein anderes Zeichen wechseln. Er bestimmt die Häuser — und damit fast jede Aussage zu Beruf, Partnerschaft und Zeitpunkten. Steht die Uhrzeit auf deiner Geburtsurkunde, nimm diese.'**
+  String get birthTimeWhyItMatters;
+
+  /// Title of the solar-chart caveat banner. AC2.
+  ///
+  /// In de, this message translates to:
+  /// **'Ohne Uhrzeit: Sonnenhoroskop'**
+  String get birthTimeUnknownCaveatTitle;
+
+  /// AC2. Says what is actually lost, rather than implying a slightly less precise result.
+  ///
+  /// In de, this message translates to:
+  /// **'Ohne Geburtszeit gibt es keinen Aszendenten und damit keine Häuser. Wir berechnen ein Sonnenhoroskop: Planetenstände und Dashas stimmen, Aussagen zu Beruf, Partnerschaft und Zeitpunkten sind aber nur eingeschränkt möglich.'**
+  String get birthTimeUnknownCaveat;
+
+  /// Shown when the date does not match the required format.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte im Format TT.MM.JJJJ eingeben'**
+  String get birthDateErrorMalformed;
+
+  /// Shown for 31.04 or 29.02 in a common year.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Datum gibt es nicht'**
+  String get birthDateErrorNotACalendarDate;
+
+  /// AC3.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Geburtsdatum kann nicht in der Zukunft liegen'**
+  String get birthDateErrorInFuture;
+
+  /// AC3.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte ein Jahr ab 1800 eingeben'**
+  String get birthDateErrorTooEarly;
+
+  /// Shown when the time does not match. The example is deliberately an evening one, to surface the 24-hour convention.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte im Format HH:MM eingeben, zum Beispiel 19:45'**
+  String get birthTimeErrorMalformed;
+
+  /// Shown for 24:00 or minute 60.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte eine Uhrzeit zwischen 00:00 und 23:59 eingeben'**
+  String get birthTimeErrorOutOfRange;
+
+  /// Primary action on the birth-data screen.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiter'**
+  String get birthDataContinue;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

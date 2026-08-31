@@ -23,6 +23,13 @@ abstract final class AppRoutes {
   /// reached by redirect, and left by completing it.
   static const String onboarding = '/onboarding';
 
+  /// Birth date and time entry (US-020).
+  ///
+  /// Nested under Kundali: it is the first step of getting a chart, and the
+  /// back control should return there rather than to wherever the user came
+  /// from.
+  static const String birthData = '/kundali/geburtsdaten';
+
   /// Self-service account deletion (US-015).
   ///
   /// Nested under the Profile tab so the back button returns there, and so the

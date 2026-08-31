@@ -525,4 +525,68 @@ class AppL10nDe extends AppL10n {
   @override
   String get deleteAccountFailed =>
       'Die Löschung konnte nicht angefordert werden. Bitte versuche es später erneut.';
+
+  @override
+  String get birthDataTitle => 'Geburtsdaten';
+
+  @override
+  String get birthDataIntro =>
+      'Für ein genaues Kundali brauchen wir Datum und Uhrzeit deiner Geburt.';
+
+  @override
+  String get birthDateLabel => 'Geburtsdatum';
+
+  @override
+  String get birthDateHint => 'TT.MM.JJJJ';
+
+  @override
+  String get birthTimeLabel => 'Geburtszeit';
+
+  @override
+  String get birthTimeHint => 'HH:MM';
+
+  @override
+  String get birthTimeHelper =>
+      '24-Stunden-Format, zum Beispiel 07:30 oder 19:45';
+
+  @override
+  String get birthTimeUnknownLabel => 'Geburtszeit unbekannt';
+
+  @override
+  String get birthTimeWhyItMattersTitle => 'Warum die genaue Minute zählt';
+
+  @override
+  String get birthTimeWhyItMatters =>
+      'Der Aszendent verschiebt sich etwa alle vier Minuten um ein Grad und kann innerhalb einer Stunde in ein anderes Zeichen wechseln. Er bestimmt die Häuser — und damit fast jede Aussage zu Beruf, Partnerschaft und Zeitpunkten. Steht die Uhrzeit auf deiner Geburtsurkunde, nimm diese.';
+
+  @override
+  String get birthTimeUnknownCaveatTitle => 'Ohne Uhrzeit: Sonnenhoroskop';
+
+  @override
+  String get birthTimeUnknownCaveat =>
+      'Ohne Geburtszeit gibt es keinen Aszendenten und damit keine Häuser. Wir berechnen ein Sonnenhoroskop: Planetenstände und Dashas stimmen, Aussagen zu Beruf, Partnerschaft und Zeitpunkten sind aber nur eingeschränkt möglich.';
+
+  @override
+  String get birthDateErrorMalformed => 'Bitte im Format TT.MM.JJJJ eingeben';
+
+  @override
+  String get birthDateErrorNotACalendarDate => 'Dieses Datum gibt es nicht';
+
+  @override
+  String get birthDateErrorInFuture =>
+      'Das Geburtsdatum kann nicht in der Zukunft liegen';
+
+  @override
+  String get birthDateErrorTooEarly => 'Bitte ein Jahr ab 1800 eingeben';
+
+  @override
+  String get birthTimeErrorMalformed =>
+      'Bitte im Format HH:MM eingeben, zum Beispiel 19:45';
+
+  @override
+  String get birthTimeErrorOutOfRange =>
+      'Bitte eine Uhrzeit zwischen 00:00 und 23:59 eingeben';
+
+  @override
+  String get birthDataContinue => 'Weiter';
 }

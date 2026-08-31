@@ -67,9 +67,16 @@ class AppTextField extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              label,
-              style: AppTypography.labelSmall.copyWith(color: colors.onSurface),
+            // Flexible, not a bare Text: a long German label at a large text
+            // scale otherwise pushes the required marker off the right edge
+            // and throws a RenderFlex overflow. Same failure as the one
+            // `AppKeyValueRow` had.
+            Flexible(
+              child: Text(
+                label,
+                style:
+                    AppTypography.labelSmall.copyWith(color: colors.onSurface),
+              ),
             ),
             if (isRequired) ...[
               const SizedBox(width: AppSpacing.xxs),
