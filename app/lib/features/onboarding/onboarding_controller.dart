@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,11 +15,14 @@ enum OnboardingStatus { unknown, notCompleted, completed }
 ///
 /// The stored key is `onboarding_completed`, named in AC4. It is also the event
 /// name analytics will use, so the two cannot drift.
-class OnboardingController extends StateNotifier<OnboardingStatus> {
+class OnboardingController extends Notifier<OnboardingStatus> {
   OnboardingController({SharedPreferences? preferences})
-      : _preferences = preferences,
-        super(OnboardingStatus.unknown) {
-    _restore();
+      : _preferences = preferences;
+
+  @override
+  OnboardingStatus build() {
+    unawaited(_restore());
+    return OnboardingStatus.unknown;
   }
 
   /// Storage key and analytics event name. Named by AC4.
@@ -35,7 +40,7 @@ class OnboardingController extends StateNotifier<OnboardingStatus> {
     // A completion recorded while this read was in flight wins. The same race
     // that re-granted consent in US-008 would here send a user who just
     // finished onboarding back to the start of it.
-    if (mounted && !_decidedThisSession) {
+    if (ref.mounted && !_decidedThisSession) {
       state = completed
           ? OnboardingStatus.completed
           : OnboardingStatus.notCompleted;
@@ -63,6 +68,5 @@ class OnboardingController extends StateNotifier<OnboardingStatus> {
 }
 
 final onboardingControllerProvider =
-    StateNotifierProvider<OnboardingController, OnboardingStatus>(
-  (ref) => OnboardingController(),
-);
+    NotifierProvider<OnboardingController, OnboardingStatus>(
+        OnboardingController.new);

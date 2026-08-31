@@ -13,7 +13,7 @@ void main() {
     Widget subject() => ProviderScope(
           overrides: [
             connectivityControllerProvider.overrideWith(
-              (ref) => ConnectivityController.fixed(NetworkStatus.online),
+              () => ConnectivityController.fixed(NetworkStatus.online),
             ),
           ],
           child: const JyotishApp(),

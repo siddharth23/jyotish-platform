@@ -93,22 +93,41 @@ enum AuthFailureReason {
 /// Owns three things the screen should not: the double-tap guard, restoring
 /// what Apple disclosed on a first authorisation, and keeping a cancelled sheet
 /// from looking like an error.
-class AuthController extends StateNotifier<AuthState> {
+class AuthController extends Notifier<AuthState> {
+  /// Dependencies are optional so the provider can resolve them from `ref` in
+  /// [build] — a Notifier factory has no ref of its own — while tests keep
+  /// handing them in directly.
   AuthController({
-    required SocialSignIn signIn,
-    required AuthGateway gateway,
-    required AppleAuthorisationStore appleStore,
-    AppLogger logger = const AppLogger(),
-  })  : _signIn = signIn,
-        _gateway = gateway,
-        _appleStore = appleStore,
-        _logger = logger,
-        super(const AuthIdle());
+    SocialSignIn? signIn,
+    AuthGateway? gateway,
+    AppleAuthorisationStore? appleStore,
+    AppLogger? logger,
+  })  : _injectedSignIn = signIn,
+        _injectedGateway = gateway,
+        _injectedAppleStore = appleStore,
+        _injectedLogger = logger;
 
-  final SocialSignIn _signIn;
-  final AuthGateway _gateway;
-  final AppleAuthorisationStore _appleStore;
-  final AppLogger _logger;
+  final SocialSignIn? _injectedSignIn;
+  final AuthGateway? _injectedGateway;
+  final AppleAuthorisationStore? _injectedAppleStore;
+  final AppLogger? _injectedLogger;
+
+  /// Not `late final`: [build] re-runs when a watched dependency changes and
+  /// the instance is preserved, so a final field would throw on reassignment.
+  late SocialSignIn _signIn;
+  late AuthGateway _gateway;
+  late AppleAuthorisationStore _appleStore;
+  late AppLogger _logger;
+
+  @override
+  AuthState build() {
+    _signIn = _injectedSignIn ?? ref.watch(socialSignInProvider);
+    _gateway = _injectedGateway ?? ref.watch(authGatewayProvider);
+    _appleStore =
+        _injectedAppleStore ?? ref.watch(appleAuthorisationStoreProvider);
+    _logger = _injectedLogger ?? ref.watch(appLoggerProvider);
+    return const AuthIdle();
+  }
 
   Future<void> signInWith(SocialProvider provider) async {
     // A second tap while a sheet is open opens a second sheet on Android and
@@ -249,13 +268,8 @@ final appleAuthorisationStoreProvider = Provider<AppleAuthorisationStore>(
   (ref) => SharedPreferencesAppleAuthorisationStore(),
 );
 
-final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
-  (ref) => AuthController(
-    signIn: ref.watch(socialSignInProvider),
-    gateway: ref.watch(authGatewayProvider),
-    appleStore: ref.watch(appleAuthorisationStoreProvider),
-    logger: ref.watch(appLoggerProvider),
-  ),
+final authControllerProvider = NotifierProvider<AuthController, AuthState>(
+  AuthController.new,
 );
 
 /// Which providers this build may offer, for the platform it is running on.

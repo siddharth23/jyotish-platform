@@ -90,7 +90,7 @@ class UnavailableSessionRefresher implements SessionRefresher {
       throw StateError('The API has no refresh endpoint yet.');
 }
 
-class SessionController extends StateNotifier<SessionState> {
+class SessionController extends Notifier<SessionState> {
   SessionController({
     required SecureTokenStore store,
     required SessionRefresher refresher,
@@ -99,8 +99,10 @@ class SessionController extends StateNotifier<SessionState> {
   })  : _store = store,
         _refresher = refresher,
         _logger = logger,
-        _now = now ?? DateTime.now,
-        super(const SessionRestoring());
+        _now = now ?? DateTime.now;
+
+  @override
+  SessionState build() => const SessionRestoring();
 
   final SecureTokenStore _store;
   final SessionRefresher _refresher;
@@ -121,7 +123,7 @@ class SessionController extends StateNotifier<SessionState> {
   Future<void> restore() async {
     final stored = await _store.read();
     // Signed out while this read was in flight. Honour the sign-out.
-    if (_ended || !mounted) return;
+    if (_ended || !ref.mounted) return;
     state = stored == null ? const SessionSignedOut() : SessionActive(stored);
   }
 
@@ -129,7 +131,7 @@ class SessionController extends StateNotifier<SessionState> {
   Future<void> begin(SessionTokens tokens) async {
     _ended = false;
     await _store.write(tokens);
-    if (!mounted) return;
+    if (!ref.mounted) return;
     state = SessionActive(tokens);
   }
 
@@ -185,7 +187,7 @@ class SessionController extends StateNotifier<SessionState> {
     }
 
     await _store.write(renewed);
-    if (_ended || !mounted) return null;
+    if (_ended || !ref.mounted) return null;
     state = SessionActive(renewed);
     return renewed;
   }
@@ -201,13 +203,13 @@ class SessionController extends StateNotifier<SessionState> {
     _ended = true;
     _inFlight = null;
     await _store.clear();
-    if (!mounted) return;
+    if (!ref.mounted) return;
     state = SessionSignedOut(reason: reason);
   }
 }
 
 final sessionControllerProvider =
-    StateNotifierProvider<SessionController, SessionState>((ref) {
+    NotifierProvider<SessionController, SessionState>(() {
   throw UnimplementedError(
     'Override sessionControllerProvider at the root of the app.',
   );

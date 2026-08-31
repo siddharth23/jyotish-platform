@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -111,11 +113,14 @@ class TelemetryConsent {
 /// Loading is asynchronous, so for a few frames after launch the app behaves as
 /// though nothing is consented — which is the correct direction for the race to
 /// fail in.
-class TelemetryConsentController extends StateNotifier<TelemetryConsent> {
+class TelemetryConsentController extends Notifier<TelemetryConsent> {
   TelemetryConsentController({SharedPreferences? preferences})
-      : _preferences = preferences,
-        super(TelemetryConsent.none) {
-    _restore();
+      : _preferences = preferences;
+
+  @override
+  TelemetryConsent build() {
+    unawaited(_restore());
+    return TelemetryConsent.none;
   }
 
   static const String _crashKey = 'consent_crash_reporting';
@@ -142,7 +147,7 @@ class TelemetryConsentController extends StateNotifier<TelemetryConsent> {
     // dangerous direction: someone taps "reject all", the read resolves with a
     // previously stored "granted", and crash reports start flowing from a user
     // who just refused them.
-    if (mounted && !_decidedThisSession) state = restored;
+    if (ref.mounted && !_decidedThisSession) state = restored;
   }
 
   /// Records a decision for one category.
@@ -196,6 +201,5 @@ class TelemetryConsentController extends StateNotifier<TelemetryConsent> {
 }
 
 final telemetryConsentProvider =
-    StateNotifierProvider<TelemetryConsentController, TelemetryConsent>(
-  (ref) => TelemetryConsentController(),
-);
+    NotifierProvider<TelemetryConsentController, TelemetryConsent>(
+        TelemetryConsentController.new);

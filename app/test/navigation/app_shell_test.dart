@@ -25,7 +25,7 @@ Widget app({
       // The real controller reaches for a platform channel that does not exist
       // in a widget test.
       connectivityControllerProvider.overrideWith(
-        (ref) => ConnectivityController.fixed(network),
+        () => ConnectivityController.fixed(network),
       ),
     ],
     child: MaterialApp.router(

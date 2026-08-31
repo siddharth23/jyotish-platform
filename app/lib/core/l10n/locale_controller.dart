@@ -1,5 +1,7 @@
 import 'dart:ui' show Locale;
 
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,11 +55,14 @@ enum LocalePreference {
 /// starts at [LocalePreference.system] — the correct default anyway — and updates
 /// once storage answers. The visible effect of a stored override is a brief first
 /// frame in the device language, which is preferable to a splash screen.
-class LocaleController extends StateNotifier<LocalePreference> {
+class LocaleController extends Notifier<LocalePreference> {
   LocaleController({SharedPreferences? preferences})
-      : _preferences = preferences,
-        super(LocalePreference.system) {
-    _restore();
+      : _preferences = preferences;
+
+  @override
+  LocalePreference build() {
+    unawaited(_restore());
+    return LocalePreference.system;
   }
 
   static const String _storageKey = 'locale_preference';
@@ -67,7 +72,7 @@ class LocaleController extends StateNotifier<LocalePreference> {
   Future<void> _restore() async {
     _preferences ??= await SharedPreferences.getInstance();
     final stored = _preferences!.getString(_storageKey);
-    if (stored != null && mounted) {
+    if (stored != null && ref.mounted) {
       state = LocalePreference.fromStorage(stored);
     }
   }
@@ -81,6 +86,4 @@ class LocaleController extends StateNotifier<LocalePreference> {
 }
 
 final localeControllerProvider =
-    StateNotifierProvider<LocaleController, LocalePreference>(
-  (ref) => LocaleController(),
-);
+    NotifierProvider<LocaleController, LocalePreference>(LocaleController.new);
