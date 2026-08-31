@@ -36,7 +36,7 @@ abstract interface class SecureTokenStore {
   Future<void> clear();
 }
 
-/// The real store: Keychain on iOS, EncryptedSharedPreferences on Android.
+/// The real store: Keychain on iOS, Keystore-backed cipher storage on Android.
 class KeychainTokenStore implements SecureTokenStore {
   KeychainTokenStore({FlutterSecureStorage? storage})
       : _storage = storage ?? _defaultStorage;
@@ -44,9 +44,18 @@ class KeychainTokenStore implements SecureTokenStore {
   /// Both platforms need explicit options; the defaults are weaker than this
   /// data warrants.
   static const FlutterSecureStorage _defaultStorage = FlutterSecureStorage(
-    // Without this Android falls back to plain SharedPreferences on older API
-    // levels, which would quietly undo the entire point of this class.
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    // `encryptedSharedPreferences: true` used to be set here, and its removal
+    // in flutter_secure_storage 11 is not a downgrade. The Jetpack Security
+    // (EncryptedSharedPreferences) backend it selected is gone; the plugin now
+    // always uses its own Keystore-backed AES-GCM cipher storage, which is what
+    // that flag was asking for in the first place.
+    //
+    // MIGRATION, for whoever upgrades next: v11 removes everything deprecated
+    // in v10, and data written by v9 is unreadable after the jump. Going
+    // 9 -> 11 directly is only safe because no build with real users has ever
+    // stored a token — there is no API to issue one yet. Once there is, the
+    // path is 9 -> 10 -> 11, or every user is silently signed out for good.
+    aOptions: AndroidOptions(),
     iOptions: IOSOptions(
       // Not synced to iCloud: a token authorises one device, and a token that
       // follows the user to a new phone outlives the device it was issued to.
