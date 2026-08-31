@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/connectivity/connectivity_controller.dart';
 import 'package:jyotish_app/core/design/design_system.dart';
 import 'package:jyotish_app/core/flags/flag_providers.dart';
-import 'package:jyotish_app/core/flags/flag_repository.dart';
 import 'package:jyotish_app/core/flags/flag_rule_set.dart';
 import 'package:jyotish_app/core/l10n/generated/app_l10n.dart';
 import 'package:jyotish_app/core/l10n/locale_controller.dart';
@@ -21,12 +20,12 @@ Widget app({
   return ProviderScope(
     overrides: [
       connectivityControllerProvider.overrideWith(
-        (ref) => ConnectivityController.fixed(NetworkStatus.online),
+        () => ConnectivityController.fixed(NetworkStatus.online),
       ),
       // Seed the controller directly rather than going through storage, so the
       // test asserts on evaluation rather than on the cache.
       flagRuleSetProvider.overrideWith(
-        (ref) => _SeededRuleSet(ruleSet),
+        () => _SeededRuleSet(ruleSet),
       ),
     ],
     child: MaterialApp.router(
@@ -45,9 +44,16 @@ Widget app({
 }
 
 class _SeededRuleSet extends FlagRuleSetController {
-  _SeededRuleSet(FlagRuleSet ruleSet) : super(FlagRepository()) {
-    state = ruleSet;
-  }
+  _SeededRuleSet(this._seed);
+
+  final FlagRuleSet _seed;
+
+  /// Seeds through `build` rather than assigning `state` in the constructor.
+  /// A Riverpod 3 Notifier has no element yet at construction time, and this
+  /// also skips the disk restore, which is what the test wants: it asserts on
+  /// evaluation, not on the cache.
+  @override
+  FlagRuleSet build() => _seed;
 }
 
 FlagRuleSet withPaidEvaluation({required bool enabled}) => FlagRuleSet(

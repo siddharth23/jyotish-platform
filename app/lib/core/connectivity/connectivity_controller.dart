@@ -16,20 +16,35 @@ enum NetworkStatus { online, offline }
 /// Starts [NetworkStatus.online]. An app that flashes an offline banner during
 /// the first frame of every cold start, before the platform has answered, trains
 /// users to ignore the banner — so the pessimistic default is the wrong one here.
-class ConnectivityController extends StateNotifier<NetworkStatus> {
+class ConnectivityController extends Notifier<NetworkStatus> {
   ConnectivityController({Connectivity? connectivity})
       : _connectivity = connectivity ?? Connectivity(),
-        super(NetworkStatus.online) {
-    _start();
-  }
+        _fixed = null;
 
   /// A controller pinned to [status] that never touches the platform channel.
   ///
   /// For tests and for previews. Subscribing to real connectivity in a widget
   /// test produces async platform errors unrelated to what is being tested.
-  ConnectivityController.fixed(super.status) : _connectivity = null;
+  ConnectivityController.fixed(NetworkStatus status)
+      : _connectivity = null,
+        _fixed = status;
 
   final Connectivity? _connectivity;
+
+  /// Set only by [ConnectivityController.fixed]; suppresses the subscription.
+  final NetworkStatus? _fixed;
+
+  @override
+  NetworkStatus build() {
+    // Replaces the old `dispose` override: a Notifier's lifetime is the
+    // provider's, and cancellation hangs off the same hook.
+    ref.onDispose(() => _subscription?.cancel());
+    final fixed = _fixed;
+    if (fixed != null) return fixed;
+    unawaited(_start());
+    return NetworkStatus.online;
+  }
+
   StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   Future<void> _start() async {
@@ -45,22 +60,16 @@ class ConnectivityController extends StateNotifier<NetworkStatus> {
   }
 
   void _handle(List<ConnectivityResult> results) {
-    if (!mounted) return;
+    if (!ref.mounted) return;
     // `none` alone means no path. An empty list is what some platforms report
     // before they have an answer, and is not evidence of being offline.
     final offline = results.isNotEmpty &&
         results.every((r) => r == ConnectivityResult.none);
     state = offline ? NetworkStatus.offline : NetworkStatus.online;
   }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
 }
 
 final connectivityControllerProvider =
-    StateNotifierProvider<ConnectivityController, NetworkStatus>(
-  (ref) => ConnectivityController(),
+    NotifierProvider<ConnectivityController, NetworkStatus>(
+  ConnectivityController.new,
 );

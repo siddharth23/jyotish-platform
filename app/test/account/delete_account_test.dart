@@ -37,7 +37,7 @@ Widget app({
   return ProviderScope(
     overrides: [
       connectivityControllerProvider.overrideWith(
-        (ref) => ConnectivityController.fixed(NetworkStatus.online),
+        () => ConnectivityController.fixed(NetworkStatus.online),
       ),
       if (gateway != null)
         accountDeletionGatewayProvider.overrideWithValue(gateway),

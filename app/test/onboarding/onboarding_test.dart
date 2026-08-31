@@ -25,7 +25,7 @@ Widget app({
   return ProviderScope(
     overrides: [
       connectivityControllerProvider.overrideWith(
-        (ref) => ConnectivityController.fixed(NetworkStatus.online),
+        () => ConnectivityController.fixed(NetworkStatus.online),
       ),
     ],
     child: Consumer(
@@ -54,6 +54,21 @@ Widget app({
       },
     ),
   );
+}
+
+/// Mounts an onboarding controller so it has a live provider element.
+///
+/// A Riverpod 3 Notifier draws `ref` and `state` from the element, so a
+/// merely-constructed one throws "uninitialized state". Reading the provider
+/// once runs `build`, which is also what starts the storage restore these
+/// tests race against.
+OnboardingController mountedOnboarding(OnboardingController c) {
+  final container = ProviderContainer(
+    overrides: [onboardingControllerProvider.overrideWith(() => c)],
+  );
+  addTearDown(container.dispose);
+  container.read(onboardingControllerProvider);
+  return c;
 }
 
 void main() {
@@ -232,9 +247,9 @@ void main() {
     });
 
     test('completion persists under the key AC4 names', () async {
-      final controller = OnboardingController(
+      final controller = mountedOnboarding(OnboardingController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await controller.complete();
 
       final prefs = await SharedPreferences.getInstance();
@@ -243,14 +258,14 @@ void main() {
     });
 
     test('completion survives a restart', () async {
-      final first = OnboardingController(
+      final first = mountedOnboarding(OnboardingController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await first.complete();
 
-      final second = OnboardingController(
+      final second = mountedOnboarding(OnboardingController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await Future<void>.delayed(Duration.zero);
       expect(second.state, OnboardingStatus.completed);
     });
@@ -258,9 +273,9 @@ void main() {
     test('a completion during the storage read is not undone', () async {
       // The same restore race as US-006 and US-008: here it would send a user
       // who just finished the carousel back to the start of it.
-      final controller = OnboardingController(
+      final controller = mountedOnboarding(OnboardingController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await controller.complete();
       await Future<void>.delayed(Duration.zero);
       await Future<void>.delayed(Duration.zero);
@@ -268,9 +283,9 @@ void main() {
     });
 
     test('reset shows it again, for support', () async {
-      final controller = OnboardingController(
+      final controller = mountedOnboarding(OnboardingController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await controller.complete();
       await controller.reset();
       expect(controller.state, OnboardingStatus.notCompleted);
@@ -319,7 +334,7 @@ void main() {
         ProviderScope(
           overrides: [
             connectivityControllerProvider.overrideWith(
-              (ref) => ConnectivityController.fixed(NetworkStatus.online),
+              () => ConnectivityController.fixed(NetworkStatus.online),
             ),
           ],
           child: MaterialApp.router(

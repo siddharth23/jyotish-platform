@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/observability/app_logger.dart';
 import 'package:jyotish_app/core/observability/crash_reporter.dart';
@@ -26,6 +27,20 @@ CrashReporter reporterWith(
       bufferLimit: bufferLimit,
       now: () => DateTime.utc(2026, 8, 2, 12),
     );
+
+/// Mounts a consent controller so it has a live provider element.
+///
+/// A Riverpod 3 Notifier takes `ref` and `state` from the element, so one that
+/// is only constructed throws "uninitialized state" the first time anything
+/// reads or writes its state. Reading the provider once runs `build`.
+TelemetryConsentController mountedConsent(TelemetryConsentController c) {
+  final container = ProviderContainer(
+    overrides: [telemetryConsentProvider.overrideWith(() => c)],
+  );
+  addTearDown(container.dispose);
+  container.read(telemetryConsentProvider);
+  return c;
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -246,14 +261,14 @@ void main() {
 
   group('Consent persistence', () {
     test('a decision survives a restart', () async {
-      final first = TelemetryConsentController(
+      final first = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await first.set(TelemetryCategory.crashReporting, ConsentState.granted);
 
-      final second = TelemetryConsentController(
+      final second = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await Future<void>.delayed(Duration.zero);
       expect(second.state.allows(TelemetryCategory.crashReporting), isTrue);
     });
@@ -261,9 +276,9 @@ void main() {
     test('reject-all is exactly as available as accept-all', () async {
       // COMPLIANCE.md requires reject-all to be as prominent as accept-all;
       // that starts with both being one call.
-      final controller = TelemetryConsentController(
+      final controller = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await controller.grantAll();
       expect(controller.state.needsDecision, isFalse);
       expect(controller.state.allows(TelemetryCategory.performance), isTrue);
@@ -275,9 +290,9 @@ void main() {
     });
 
     test('withdrawal returns to undecided so the CMP asks again', () async {
-      final controller = TelemetryConsentController(
+      final controller = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await controller.grantAll();
       await controller.reset();
       expect(controller.state, TelemetryConsent.none);
@@ -293,9 +308,9 @@ void main() {
         'consent_crash_reporting': 'granted',
         'consent_performance': 'granted',
       });
-      final controller = TelemetryConsentController(
+      final controller = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
 
       // Decide immediately, before the restore future resolves.
       await controller.denyAll();
@@ -311,9 +326,9 @@ void main() {
     });
 
     test('a fresh install consents to nothing', () async {
-      final controller = TelemetryConsentController(
+      final controller = mountedConsent(TelemetryConsentController(
         preferences: await SharedPreferences.getInstance(),
-      );
+      ));
       await Future<void>.delayed(Duration.zero);
       for (final category in TelemetryCategory.values) {
         expect(controller.state.allows(category), isFalse);

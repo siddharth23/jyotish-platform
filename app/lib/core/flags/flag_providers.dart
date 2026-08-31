@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,12 +51,25 @@ final flagRepositoryProvider = Provider<FlagRepository>(
 /// Starts empty so the first frame renders on compiled-in defaults rather than
 /// waiting on a disk read, then swaps in the cached document. Overridden
 /// directly in tests.
-class FlagRuleSetController extends StateNotifier<FlagRuleSet> {
-  FlagRuleSetController(this._repository) : super(FlagRuleSet.empty) {
-    _restore();
-  }
+class FlagRuleSetController extends Notifier<FlagRuleSet> {
+  /// [repository] is optional so the provider can supply it from `ref` in
+  /// [build] — a Notifier factory has no ref of its own — while tests can
+  /// still hand one in directly.
+  FlagRuleSetController([this._injectedRepository]);
 
-  final FlagRepository _repository;
+  final FlagRepository? _injectedRepository;
+
+  /// Not `late final`: [build] re-runs when a watched dependency changes, and
+  /// the Notifier instance is preserved across those runs, so a final field
+  /// would throw on the second assignment.
+  late FlagRepository _repository;
+
+  @override
+  FlagRuleSet build() {
+    _repository = _injectedRepository ?? ref.watch(flagRepositoryProvider);
+    unawaited(_restore());
+    return FlagRuleSet.empty;
+  }
 
   Future<void> _restore() async {
     final cached = await _repository.load();
@@ -62,20 +77,20 @@ class FlagRuleSetController extends StateNotifier<FlagRuleSet> {
     // state. A fetch can complete while this disk read is still in flight, and
     // an unconditional assignment would let the slower read clobber fresher
     // configuration — including re-enabling a flow that was just killed.
-    if (mounted && cached.version > state.version) state = cached;
+    if (ref.mounted && cached.version > state.version) state = cached;
   }
 
   /// Applies a freshly fetched document, if it is newer than the cache.
   Future<bool> apply(FlagRuleSet ruleSet) async {
     final stored = await _repository.save(ruleSet);
-    if (stored && mounted) state = ruleSet;
+    if (stored && ref.mounted) state = ruleSet;
     return stored;
   }
 }
 
 final flagRuleSetProvider =
-    StateNotifierProvider<FlagRuleSetController, FlagRuleSet>(
-  (ref) => FlagRuleSetController(ref.watch(flagRepositoryProvider)),
+    NotifierProvider<FlagRuleSetController, FlagRuleSet>(
+  FlagRuleSetController.new,
 );
 
 final flagEvaluatorProvider = Provider<FlagEvaluator>((ref) {

@@ -67,7 +67,7 @@ class _BirthPlaceFieldState extends ConsumerState<BirthPlaceField> {
         helperText: l10n.birthPlaceHelper,
         controller: _queryController,
         isRequired: true,
-        onChanged: (value) => _search(gazetteer.valueOrNull, value),
+        onChanged: (value) => _search(gazetteer.value, value),
       ),
       // The asset decodes on a background isolate the first time it is needed.
       // Saying so beats an empty result list, which reads as "no such place".

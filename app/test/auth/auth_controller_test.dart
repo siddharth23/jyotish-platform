@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/features/auth/account_linking.dart';
 import 'package:jyotish_app/features/auth/apple_authorisation_store.dart';
@@ -72,15 +73,29 @@ const signedIn = SocialExchangeSignedIn(
   final gateway = ScriptedGateway(exchange: exchange, link: link);
   final store = InMemoryAppleAuthorisationStore();
   return (
-    controller: AuthController(
+    controller: mounted(AuthController(
       signIn: signIn,
       gateway: gateway,
       appleStore: store,
-    ),
+    )),
     signIn: signIn,
     gateway: gateway,
     store: store,
   );
+}
+
+/// Mounts [controller] in a container so it has a live element.
+///
+/// A Riverpod 3 Notifier gets its `ref` and `state` from the provider element,
+/// so one that is merely constructed throws "uninitialized state" on first
+/// use. Reading the provider once runs `build` and gives it that element.
+AuthController mounted(AuthController controller) {
+  final container = ProviderContainer(
+    overrides: [authControllerProvider.overrideWith(() => controller)],
+  );
+  addTearDown(container.dispose);
+  container.read(authControllerProvider);
+  return controller;
 }
 
 void main() {
@@ -161,11 +176,11 @@ void main() {
     });
 
     test('the unconfigured adapter fails rather than pretending', () async {
-      final controller = AuthController(
+      final controller = mounted(AuthController(
         signIn: const UnconfiguredSocialSignIn(),
         gateway: const UnavailableAuthGateway(),
         appleStore: InMemoryAppleAuthorisationStore(),
-      );
+      ));
 
       await controller.signInWith(SocialProvider.google);
 

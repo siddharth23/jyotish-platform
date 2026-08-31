@@ -58,16 +58,27 @@ class UnavailableAccountDeletionGateway implements AccountDeletionGateway {
   Future<DateTime?> requestDeletion() async => null;
 }
 
-class AccountDeletionController extends StateNotifier<AccountDeletionState> {
+class AccountDeletionController extends Notifier<AccountDeletionState> {
+  /// Dependencies are optional so the provider can read them from `ref` in
+  /// [build]; a Notifier factory has no ref of its own.
   AccountDeletionController({
-    required AccountDeletionGateway gateway,
-    required AppLogger logger,
-  })  : _gateway = gateway,
-        _logger = logger,
-        super(const AccountDeletionIdle());
+    AccountDeletionGateway? gateway,
+    AppLogger? logger,
+  })  : _injectedGateway = gateway,
+        _injectedLogger = logger;
 
-  final AccountDeletionGateway _gateway;
-  final AppLogger _logger;
+  final AccountDeletionGateway? _injectedGateway;
+  final AppLogger? _injectedLogger;
+
+  late AccountDeletionGateway _gateway;
+  late AppLogger _logger;
+
+  @override
+  AccountDeletionState build() {
+    _gateway = _injectedGateway ?? ref.watch(accountDeletionGatewayProvider);
+    _logger = _injectedLogger ?? ref.watch(appLoggerProvider);
+    return const AccountDeletionIdle();
+  }
 
   Future<void> requestDeletion() async {
     // A second tap while the first request is in flight would schedule nothing
@@ -83,11 +94,11 @@ class AccountDeletionController extends StateNotifier<AccountDeletionState> {
       _logger.warn('account deletion request failed', const {
         'operation': 'account_deletion_request',
       });
-      if (mounted) state = const AccountDeletionFailed();
+      if (ref.mounted) state = const AccountDeletionFailed();
       return;
     }
 
-    if (!mounted) return;
+    if (!ref.mounted) return;
     state = purgeDueAt == null
         ? const AccountDeletionFailed()
         : AccountDeletionScheduled(purgeDueAt);
@@ -99,9 +110,6 @@ final accountDeletionGatewayProvider = Provider<AccountDeletionGateway>(
 );
 
 final accountDeletionControllerProvider =
-    StateNotifierProvider<AccountDeletionController, AccountDeletionState>(
-  (ref) => AccountDeletionController(
-    gateway: ref.watch(accountDeletionGatewayProvider),
-    logger: ref.watch(appLoggerProvider),
-  ),
+    NotifierProvider<AccountDeletionController, AccountDeletionState>(
+  AccountDeletionController.new,
 );

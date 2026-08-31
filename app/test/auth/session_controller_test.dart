@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jyotish_app/core/observability/app_logger.dart';
 import 'package:jyotish_app/features/auth/secure_token_store.dart';
@@ -42,13 +43,23 @@ class FakeRefresher implements SessionRefresher {
 SessionController makeController({
   required SecureTokenStore store,
   required SessionRefresher refresher,
-}) =>
-    SessionController(
-      store: store,
-      refresher: refresher,
-      logger: AppLogger(sink: MemoryLogSink()),
-      now: () => now,
-    );
+}) {
+  final controller = SessionController(
+    store: store,
+    refresher: refresher,
+    logger: AppLogger(sink: MemoryLogSink()),
+    now: () => now,
+  );
+  // A Riverpod 3 Notifier draws `ref` and `state` from its provider element,
+  // so a merely-constructed one throws "uninitialized state". Reading the
+  // provider once runs `build` and mounts it.
+  final container = ProviderContainer(
+    overrides: [sessionControllerProvider.overrideWith(() => controller)],
+  );
+  addTearDown(container.dispose);
+  container.read(sessionControllerProvider);
+  return controller;
+}
 
 void main() {
   group('US-016 AC2 — tokens are held in the secure store', () {
